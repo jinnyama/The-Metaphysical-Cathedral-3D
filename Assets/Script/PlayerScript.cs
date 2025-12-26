@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
@@ -32,12 +33,16 @@ public class PlayerScript : MonoBehaviour
         Debug.DrawRay(rayStartPosition, rayDirection * distance, Color.red);
         
         // なにかを検出したら
-        if (isHit)
+        if (isHit &&raycastHit.collider.gameObject.tag == "item" && !itemObjects.Contains(raycastHit.collider.gameObject))
         {
             // LogにHitしたオブジェクト名を出力
             Debug.Log("HitObject : " + raycastHit.collider.gameObject.name);
+            if (!itemObjects.Contains(raycastHit.collider.gameObject))
+            {
+            }
+            itemObjects.Add(raycastHit.collider.gameObject);
         }
-        itemObjects.Add(raycastHit.collider.gameObject);
+       
 
     }
 }
