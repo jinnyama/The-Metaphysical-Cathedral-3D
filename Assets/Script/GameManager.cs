@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public   Sprite[] image;
-    private SpriteRenderer book;
+    private GameObject book;
     private SpriteRenderer sign;//看板
     private SpriteRenderer black;
     private SpriteRenderer background;
@@ -22,16 +22,12 @@ public class GameManager : MonoBehaviour
         Instance = this;
         background=Background.GetComponent<SpriteRenderer>()  ;
 
-        background.sprite=image[0];
-        book = GameObject.Find("Book").GetComponent<SpriteRenderer>();
-        sign = GameObject.Find("Sign").GetComponent<SpriteRenderer>();
+        
         black = GameObject.Find("BlackBoard").GetComponent<SpriteRenderer>();
 
         // 初期状態は透明
-        Color c=book.color;
+        Color c=black.color;
         c.a = 0f;
-        book.color = c;
-        sign.color = c;
         black.color = c;
 
         
@@ -43,13 +39,13 @@ public class GameManager : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.B) && Gamemode == "")
         {
-            StartCoroutine(FadeIn(book,1.0f, Color.white));
+            //StartCoroutine(FadeIn(book,1.0f, Color.white));
             Gamemode = "bookmode";
             //IsBookmodecheak = true;
         }
         if (Input.GetKeyDown(KeyCode.Escape) && Gamemode=="bookmode" )
         {
-            StartCoroutine(FadeOut(book,1.0f,Color.white));
+            //StartCoroutine(FadeOut(book,1.0f,Color.white));
             Gamemode = "";
             //IsBookmodecheak = false;
         }
