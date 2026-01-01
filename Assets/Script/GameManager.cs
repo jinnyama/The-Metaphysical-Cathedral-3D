@@ -4,15 +4,17 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public   Sprite[] image;
-    private GameObject book;
+    public   Sprite[] image;//背景用←Skyboxに変更予定
+    public Image book;
+    public Image pickaxe;
     private SpriteRenderer sign;//看板
     private SpriteRenderer black;
+    
     private SpriteRenderer background;
-    public GameObject Background;
+    //public GameObject Background;
     public string Gamemode="";
     public int currentquiznumber=0;
-    public bool IsBookmodecheak = false;
+    public bool IsBookmodeenable = false;
     public bool IsSignmodecheak = false;
     public static GameManager Instance;
 
@@ -20,15 +22,16 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Instance = this;
-        background=Background.GetComponent<SpriteRenderer>()  ;
+        //background=Background.GetComponent<SpriteRenderer>()  ;
 
         
-        black = GameObject.Find("BlackBoard").GetComponent<SpriteRenderer>();
+        book = GameObject.Find("book").GetComponent<Image>();
+        pickaxe = GameObject.Find("pickaxe").GetComponent<Image>();
 
         // 初期状態は透明
-        Color c=black.color;
+        Color c=book.color;
         c.a = 0f;
-        black.color = c;
+        book.color = c;
 
         
     }
@@ -37,15 +40,15 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         
-        if (Input.GetKeyDown(KeyCode.B) && Gamemode == "")
+        if (Input.GetKeyDown(KeyCode.B) && Gamemode == ""&& IsBookmodeenable)
         {
-            //StartCoroutine(FadeIn(book,1.0f, Color.white));
+            StartCoroutine(ImageFadeIn(book,1.0f, Color.white));
             Gamemode = "bookmode";
             //IsBookmodecheak = true;
         }
         if (Input.GetKeyDown(KeyCode.Escape) && Gamemode=="bookmode" )
         {
-            //StartCoroutine(FadeOut(book,1.0f,Color.white));
+            StartCoroutine(ImageFadeOut(book,1.0f,Color.white));
             Gamemode = "";
             //IsBookmodecheak = false;
         }
@@ -105,7 +108,33 @@ public class GameManager : MonoBehaviour
 
         }
     }
+     private System.Collections.IEnumerator ImageFadeIn(Image spr,float duration,Color c )
+    {
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            c.a = t;
+            spr.color = c;
+            yield return null;
+
+        }
+    }
     private System.Collections.IEnumerator FadeOut(SpriteRenderer spr,float duration,Color c )
+    {
+        float elapsed = 0.5f;
+        while (elapsed >0)
+        {
+            elapsed -= Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            c.a = t;
+            
+            spr.color = c;
+            yield return null;
+        }
+    }
+    private System.Collections.IEnumerator ImageFadeOut(Image spr,float duration,Color c )
     {
         float elapsed = 0.5f;
         while (elapsed >0)
@@ -129,7 +158,7 @@ public class GameManager : MonoBehaviour
             spr.color = c;
             yield return null;
         }
-        background.sprite = image[GameManager.Instance.currentquiznumber + 1];
+        background.sprite = image[currentquiznumber + 1];
         StartCoroutine(FadeOut(spr,0.5f, Color.black));
          
     }

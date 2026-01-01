@@ -14,7 +14,7 @@ public class TextScript : MonoBehaviour
         new string[] {"晴れて","文字が書かれて","虹","囲われている","聖典","囲われて"},
         new string[] {"曇って","壊れて","橋","金","ゲートの鍵","壊れて"}
     };
-    private string[] signText={"空が　　　いる","　　　　　　　いる祠",　"がかかっている","檻に　　　　いる"};
+    public string[] signText={"空が　　　いる","　　　　　　　いる祠",　"がかかっている","檻に　　　　いる"};
     public static TextScript Instance;
     
     public string choisetext;
@@ -34,7 +34,7 @@ public class TextScript : MonoBehaviour
 
         if (GameManager.Instance.Gamemode == "bookmode")
         {
-            //ダイアリーテキストがテキスト配列の０ばんめをうけとってる→一般化⚠
+            //ダイアリーテキストがテキスト配列の０ばんめをうけとってる→一般化済み
             for (int i = 0; i < diarytext.Length; i++)
             {
                 diarytext[i].text = Text[0][i];
