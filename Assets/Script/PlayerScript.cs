@@ -13,8 +13,9 @@ public class PlayerScript : MonoBehaviour
     public int itemCounts=0; // プレイヤーが所持しているアイテム数
     public UnityEngine.UI.Image [] itemsrot ;// プレイヤーが所持しているアイテムスロット
 
-    public int activeItemIndex = 0; //現在選択されているアイテムスロットのインデックス
-    public int maxActiveItemIndex = 1; //最大インデックス数
+    public Text [] itemsrotChildrenText ;// アイテムスロットの子Textコンポーネント
+    private int activeItemIndex = 0; //現在選択されているアイテムスロットのインデックス
+    private int maxActiveItemIndex = 0; //最大インデックス数
 
     public int maxitemCount = 5; //最大所持数
     public GameObject [] itemObjects;// プレイヤーが所持しているアイテムオブジェクト
@@ -33,7 +34,20 @@ public class PlayerScript : MonoBehaviour
     void Start()
     {
         itemObjects=new GameObject [maxitemCount];
+        itemsrotChildrenText=new Text [itemsrot.Length];
         instance = this;
+        Color c;
+        c.a = .05f;
+        Debug.Log("ActiveItemIndex:"+ activeItemIndex);
+        Debug.Log("MaxActiveItemIndex:"+ maxActiveItemIndex);
+        for(int i=0;i<itemsrot.Length;i++)
+        {
+            // Imageを取得してから、その色を変える（using UnityEngine.UI; が必要）
+            itemsrot[i].color =  new Color(1,1,1,0);
+            itemsrotChildrenText[i]= itemsrot[i].GetComponentInChildren<Text>();
+            itemsrotChildrenText[i].color=new Color(0,0,0,0);
+            itemsrot[i].GetComponent<Outline>().OutlineColor = Color.black;
+        }
     }
 
     // Update is called once per frame
@@ -86,16 +100,22 @@ public class PlayerScript : MonoBehaviour
             itemObjects[itemCounts]= seeObjects;
             //最大インデックス数を更新
             maxActiveItemIndex=maxActiveItemIndex>4?4:maxActiveItemIndex+1;
+            Debug.Log("ActiveItemIndex:"+ activeItemIndex);
+            Debug.Log("MaxActiveItemIndex:"+ maxActiveItemIndex);
             //アイテム欄の画像を更新
            switch (seeObjects.name)
             {
                 case "Book":
                     itemsrot[itemCounts].sprite=GameManager.Instance.book.sprite;
+                    itemsrot[itemCounts].color=new Color(1,1,1,1);
+                    itemsrotChildrenText[itemCounts].color=new Color(0,0,0,1);
                     GameManager.Instance.IsBookmodeenable = true;
                     Debug.Log("本を取得しました");
                     break;
                 case "Pickaxe":
                     itemsrot[itemCounts].sprite= GameManager.Instance.pickaxe.sprite;
+                    itemsrot[itemCounts].color=new Color(1,1,1,1);
+                    itemsrotChildrenText[itemCounts].color=new Color(0,0,0,1);
                     Debug.Log("つるはしを取得しました");
                     break;
                 //他のアイテムもここに追加
@@ -108,31 +128,28 @@ public class PlayerScript : MonoBehaviour
             //Debug.Log("ItemCount:"+ itemCounts);
         }
         //マウスホイールの入力を取得
-        mouseScrollDelta=Input.mouseScrollDelta.y * sensitivity*.05f;
+        mouseScrollDelta=Input.mouseScrollDelta.y * sensitivity;
+
         //mauseScrollDeltaの値に応じてactiveItemIndexを増減
-        activeItemIndex+= (int)mouseScrollDelta;
-        if(activeItemIndex<0)
+        if(activeItemIndex>=0 && activeItemIndex<=maxActiveItemIndex)
         {
-            activeItemIndex=0;
+            activeItemIndex+= (int)mouseScrollDelta;
+            Debug.Log("ActiveItemIndex Changed:"+ activeItemIndex);
+            mouseScrollDelta=0;
         }
-        if(activeItemIndex>maxActiveItemIndex)
-        {
-            activeItemIndex=maxActiveItemIndex;
-        }
-        
         for(int i=0;i<=maxActiveItemIndex;i++)
         {
             if(itemsrot[i].sprite==null) break;
             if(i==activeItemIndex)
             {
-                itemsrot[i].GetComponent<Outline>().OutlineColor = Color.yellow;
+                itemsrotChildrenText[i].color=Color.yellow;
             }
             else
             {
-                itemsrot[i].GetComponent<Outline>().OutlineColor = Color.black;
+                itemsrotChildrenText[i].color = Color.black;
             }
         }
-        
+
        
 
     }

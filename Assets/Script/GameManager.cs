@@ -52,7 +52,7 @@ public class GameManager : MonoBehaviour
             Gamemode = "";
             //IsBookmodecheak = false;
         }
-        if (Input.GetKeyDown(KeyCode.Space) && Gamemode == "")
+        if (Input.GetKeyDown(KeyCode.L) && Gamemode == "")
         {
             StartCoroutine(FadeIn(sign,0.5f, Color.gray));
             Gamemode= "signmode";
