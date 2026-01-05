@@ -110,19 +110,23 @@ public class PlayerScript : MonoBehaviour
                     itemsrot[itemCounts].color=new Color(1,1,1,1);
                     itemsrotChildrenText[itemCounts].color=new Color(0,0,0,1);
                     GameManager.Instance.IsBookmodeenable = true;
+                    //アイテムオブジェクトを削除
+                    Destroy(seeObjects);
                     Debug.Log("本を取得しました");
                     break;
                 case "Pickaxe":
                     itemsrot[itemCounts].sprite= GameManager.Instance.pickaxe.sprite;
                     itemsrot[itemCounts].color=new Color(1,1,1,1);
                     itemsrotChildrenText[itemCounts].color=new Color(0,0,0,1);
+                    //アイテムオブジェクトを削除
+                    Destroy(seeObjects);
                     Debug.Log("つるはしを取得しました");
                     break;
                 //他のアイテムもここに追加
             }
 
-            //アイテムオブジェクトを削除
-            Destroy(seeObjects);
+
+            seeObjects = null;
             //itemCountsを増やす
             itemCounts += 1;
             //Debug.Log("ItemCount:"+ itemCounts);
@@ -131,15 +135,23 @@ public class PlayerScript : MonoBehaviour
         mouseScrollDelta=Input.mouseScrollDelta.y * sensitivity;
 
         //mauseScrollDeltaの値に応じてactiveItemIndexを増減
-        if(activeItemIndex>=0 && activeItemIndex<=maxActiveItemIndex)
+        if(activeItemIndex>=0 && activeItemIndex<maxActiveItemIndex)
         {
             activeItemIndex+= (int)mouseScrollDelta;
+            if(activeItemIndex>=maxActiveItemIndex)
+            {
+                activeItemIndex=maxActiveItemIndex-1;
+            }
+            else if(activeItemIndex<0)
+            {
+                activeItemIndex=0;
+            }
             Debug.Log("ActiveItemIndex Changed:"+ activeItemIndex);
             mouseScrollDelta=0;
         }
-        for(int i=0;i<=maxActiveItemIndex;i++)
+        for(int i=0;i<maxActiveItemIndex;i++)
         {
-            if(itemsrot[i].sprite==null) break;
+            
             if(i==activeItemIndex)
             {
                 itemsrotChildrenText[i].color=Color.yellow;
