@@ -69,7 +69,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.C) && TextScript.Instance.choisetext != "")//一般化完了
+        if (Input.GetKeyDown(KeyCode.C) && TextScript.Instance.choisetext != ""&&Gamemode!="")//一般化完了
         {
             //コピーテキストに「copy:」＋選択テキストを代入
             TextScript.Instance.copytext.text= "copy:" + TextScript.Instance.choisetext;

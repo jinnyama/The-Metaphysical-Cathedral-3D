@@ -24,6 +24,10 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] float      distance = 0.8f;    // 検出可能な距離
 
     private bool isGetItem;     // アイテム取得フラグ
+    private bool isTereport;    // テレポート取得フラグ
+
+    private Vector3 PlayerPosition;
+    private Vector3 initialPosition;
 
     public float sensitivity = 1;
     private float mouseScrollDelta;
@@ -48,11 +52,20 @@ public class PlayerScript : MonoBehaviour
             itemsrotChildrenText[i].color=new Color(0,0,0,0);
             itemsrot[i].GetComponent<Outline>().OutlineColor = Color.black;
         }
+        PlayerPosition=this.transform.position;
+        initialPosition=this.transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            this.transform.position=PlayerPosition;
+            Debug.Log(PlayerPosition);
+            Debug.Log("初期位置にリセットしました");
+            PlayerPosition=initialPosition;
+        }
         // Rayはカメラの位置からとばす
         var rayStartPosition   = fpsCam.transform.position;
         // Rayはカメラが向いてる方向にとばす
@@ -79,12 +92,26 @@ public class PlayerScript : MonoBehaviour
             //アイテム取得フラグを立てる
             isGetItem = true;
         }
+        //hitしたオブジェクトがテレポートの場合
+        else if (isHit &&raycastHit.collider.gameObject.tag == "tereport" && seeObjects!=raycastHit.collider.gameObject)
+        {
+            // LogにHitしたオブジェクト名を出力
+            Debug.Log("HitObject : " + raycastHit.collider.gameObject.name);
+            //アイテムオブジェクトを更新
+            seeObjects=raycastHit.collider.gameObject;
+            //アウトラインエフェクトを有効化
+            seeObjects.GetComponent<Outline>().enabled = true;
+            //アイテム取得フラグを立てる
+            isTereport = true;
+        }
         if (!isHit)
         {
             if (seeObjects == null)
             {
                 //アイテム取得フラグを下ろす
                 isGetItem = false;
+                //テレポート取得フラグを下ろす
+                isTereport = false;
                 return;
             }
             //アウトラインエフェクトを無効化
@@ -96,16 +123,18 @@ public class PlayerScript : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E)&& isGetItem && itemCounts< maxitemCount)
         {
-            //アイテムをアイテム欄に追加
-            itemObjects[itemCounts]= seeObjects;
-            //最大インデックス数を更新
-            maxActiveItemIndex=maxActiveItemIndex>4?4:maxActiveItemIndex+1;
+            
+            
             Debug.Log("ActiveItemIndex:"+ activeItemIndex);
             Debug.Log("MaxActiveItemIndex:"+ maxActiveItemIndex);
             //アイテム欄の画像を更新
            switch (seeObjects.name)
             {
                 case "Book":
+                    //アイテムをアイテム欄に追加
+                    itemObjects[itemCounts]= seeObjects;
+                    //最大インデックス数を更新
+                    maxActiveItemIndex=maxActiveItemIndex>4?4:maxActiveItemIndex+1;
                     itemsrot[itemCounts].sprite=GameManager.Instance.book.sprite;
                     itemsrot[itemCounts].color=new Color(1,1,1,1);
                     itemsrotChildrenText[itemCounts].color=new Color(0,0,0,1);
@@ -113,24 +142,52 @@ public class PlayerScript : MonoBehaviour
                     //アイテムオブジェクトを削除
                     Destroy(seeObjects);
                     Debug.Log("本を取得しました");
+                    //itemCountsを増やす
+                    itemCounts += 1;
                     break;
                 case "Pickaxe":
+                    //アイテムをアイテム欄に追加
+                    itemObjects[itemCounts]= seeObjects;
+                    //最大インデックス数を更新
+                    maxActiveItemIndex=maxActiveItemIndex>4?4:maxActiveItemIndex+1;
                     itemsrot[itemCounts].sprite= GameManager.Instance.pickaxe.sprite;
                     itemsrot[itemCounts].color=new Color(1,1,1,1);
                     itemsrotChildrenText[itemCounts].color=new Color(0,0,0,1);
                     //アイテムオブジェクトを削除
                     Destroy(seeObjects);
                     Debug.Log("つるはしを取得しました");
+                    //itemCountsを増やす
+                    itemCounts += 1;
                     break;
                 //他のアイテムもここに追加
             }
 
 
             seeObjects = null;
-            //itemCountsを増やす
-            itemCounts += 1;
+            
             //Debug.Log("ItemCount:"+ itemCounts);
         }
+        if (Input.GetKeyDown(KeyCode.E) && isTereport)
+        {
+            Debug.Log("テレポートしました");
+            //テレポート処理をここに追加
+            switch (seeObjects.name)
+            {
+                case "CastleGate":
+                    PlayerPosition=this.transform.position;
+                    this.transform.position=new Vector3(303.7f,0f,875f);
+                    break;
+                case "SanctuaryGate":
+                    PlayerPosition=this.transform.position;
+                    this.transform.position=new Vector3(508f,15.5f,-1190f);
+                    break;
+                //他のテレポートもここに追加
+            }
+            isTereport = false;
+            seeObjects.GetComponent<Outline>().enabled = false;
+            seeObjects = null;
+        }
+        
         //マウスホイールの入力を取得
         mouseScrollDelta=Input.mouseScrollDelta.y * sensitivity;
 
