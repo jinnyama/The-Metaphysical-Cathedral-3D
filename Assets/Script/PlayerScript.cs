@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using Microsoft.Unity.VisualStudio.Editor;
+using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,8 +24,12 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] Camera     fpsCam;             // カメラ
     [SerializeField] float      distance = 0.8f;    // 検出可能な距離
 
+    [SerializeField] UnityEngine.UI.Image TextWindow; //テキストウィンドウ表示用
+
     private bool isGetItem;     // アイテム取得フラグ
     private bool isTereport;    // テレポート取得フラグ
+
+    //private bool IstextWindowActive=false; //テキストウィンドウ表示フラグ
 
     private Vector3 PlayerPosition;
     private Vector3 initialPosition;
@@ -32,11 +37,14 @@ public class PlayerScript : MonoBehaviour
     public float sensitivity = 1;
     private float mouseScrollDelta;
     
+    public TextScenario scenario;
+    public SignText textManager;
     public static PlayerScript instance;
 
     // Start is called before the first frame update
     void Start()
     {
+        TextWindow.enabled=false;
         itemObjects=new GameObject [maxitemCount];
         itemsrotChildrenText=new Text [itemsrot.Length];
         instance = this;
@@ -81,28 +89,33 @@ public class PlayerScript : MonoBehaviour
         Debug.DrawRay(rayStartPosition, rayDirection * distance, Color.red);
         
         // なにか新しいアイテムを検出したら
-        if (isHit &&raycastHit.collider.gameObject.tag == "item" && seeObjects!=raycastHit.collider.gameObject)
+        if (isHit && raycastHit.collider.gameObject.tag!="Untagget"&&seeObjects!=raycastHit.collider.gameObject)
         {
             // LogにHitしたオブジェクト名を出力
             Debug.Log("HitObject : " + raycastHit.collider.gameObject.name);
             //アイテムオブジェクトを更新
             seeObjects=raycastHit.collider.gameObject;
             //アウトラインエフェクトを有効化
-            seeObjects.GetComponent<Outline>().enabled = true;
-            //アイテム取得フラグを立てる
-            isGetItem = true;
-        }
-        //hitしたオブジェクトがテレポートの場合
-        else if (isHit &&raycastHit.collider.gameObject.tag == "tereport" && seeObjects!=raycastHit.collider.gameObject)
-        {
-            // LogにHitしたオブジェクト名を出力
-            Debug.Log("HitObject : " + raycastHit.collider.gameObject.name);
-            //アイテムオブジェクトを更新
-            seeObjects=raycastHit.collider.gameObject;
-            //アウトラインエフェクトを有効化
-            seeObjects.GetComponent<Outline>().enabled = true;
-            //アイテム取得フラグを立てる
-            isTereport = true;
+            
+            switch (seeObjects.tag)
+            {
+                case "item":
+                    seeObjects.GetComponent<Outline>().enabled = true;
+                    isGetItem = true;
+                    break;
+                case "tereport":
+                    seeObjects.GetComponent<Outline>().enabled = true;
+                    isTereport = true;
+                    break;
+                case "Hint":
+                    seeObjects.GetComponent<Outline>().enabled = true;
+                    isGetItem = false;
+                    isTereport = false;
+                    //TextWindow.enabled = true; 
+                    break;
+                default:
+                    break;
+            }
         }
         if (!isHit)
         {
@@ -112,10 +125,11 @@ public class PlayerScript : MonoBehaviour
                 isGetItem = false;
                 //テレポート取得フラグを下ろす
                 isTereport = false;
+                
+                //アウトラインエフェクトを無効化
+                //seeObjects.GetComponent<Outline>().enabled = false;
                 return;
             }
-            //アウトラインエフェクトを無効化
-            seeObjects.GetComponent<Outline>().enabled = false;
             //アイテムオブジェクトをリセット
             seeObjects = null;
         }
@@ -123,8 +137,8 @@ public class PlayerScript : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E)&& isGetItem && itemCounts< maxitemCount)
         {
-            
-            
+
+           
             Debug.Log("ActiveItemIndex:"+ activeItemIndex);
             Debug.Log("MaxActiveItemIndex:"+ maxActiveItemIndex);
             //アイテム欄の画像を更新
@@ -187,6 +201,14 @@ public class PlayerScript : MonoBehaviour
             seeObjects.GetComponent<Outline>().enabled = false;
             seeObjects = null;
         }
+        // if (Input.GetKeyDown(KeyCode.E) && !isGetItem && !isTereport && seeObjects!=null)
+        // {
+        //     Debug.Log("テキストウィンドウ表示");
+        //     //テキストウィンドウ表示処理をここに追加
+        //     TextWindow.enabled = true;
+        //     textManager.StartText(scenario);
+            
+        // }
         
         //マウスホイールの入力を取得
         mouseScrollDelta=Input.mouseScrollDelta.y * sensitivity;
