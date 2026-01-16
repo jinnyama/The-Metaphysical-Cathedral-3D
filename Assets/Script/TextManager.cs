@@ -1,9 +1,10 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class TextManager : MonoBehaviour
 {
-    public TextMeshProUGUI textUI;
+    public Text textUI;
 
     public TextManager instance; 
 

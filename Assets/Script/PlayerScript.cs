@@ -24,7 +24,7 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] Camera     fpsCam;             // カメラ
     [SerializeField] float      distance = 0.8f;    // 検出可能な距離
 
-    [SerializeField] UnityEngine.UI.Image TextWindow; //テキストウィンドウ表示用
+    public UnityEngine.UI.Image TextWindow; //テキストウィンドウ表示用
 
     private bool isGetItem;     // アイテム取得フラグ
     private bool isTereport;    // テレポート取得フラグ
@@ -38,6 +38,7 @@ public class PlayerScript : MonoBehaviour
     private float mouseScrollDelta;
     
     public TextScenario scenario;
+    public TextScenario[] hintscenarios;
     public SignText textManager;
     public static PlayerScript instance;
 
@@ -201,14 +202,28 @@ public class PlayerScript : MonoBehaviour
             seeObjects.GetComponent<Outline>().enabled = false;
             seeObjects = null;
         }
-        // if (Input.GetKeyDown(KeyCode.E) && !isGetItem && !isTereport && seeObjects!=null)
-        // {
-        //     Debug.Log("テキストウィンドウ表示");
-        //     //テキストウィンドウ表示処理をここに追加
-        //     TextWindow.enabled = true;
-        //     textManager.StartText(scenario);
+        if (Input.GetKeyDown(KeyCode.E) && !isGetItem && !isTereport && seeObjects!=null)
+        {
+            Debug.Log("テキストウィンドウ表示");
+            //テキストウィンドウ表示処理をここに追加
+            switch (seeObjects.name)
+            {
+                case "Hint1":
+                    scenario=hintscenarios[0];
+                    break;
+                case "Hint2":
+                    scenario=hintscenarios[1];
+                    break;
+                case "Hint3":
+                    scenario=hintscenarios[2];
+                    break;
+                default:
+                    break;
+            }
+            TextWindow.enabled = true;
+            textManager.StartText(scenario);
             
-        // }
+        }
         
         //マウスホイールの入力を取得
         mouseScrollDelta=Input.mouseScrollDelta.y * sensitivity;

@@ -2530,7 +2530,7 @@ GameObject:
   - component: {fileID: 473675693}
   - component: {fileID: 473675694}
   m_Layer: 0
-  m_Name: Hint1
+  m_Name: Book_Open
   m_TagString: Hint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2675,7 +2675,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 702109a9743d83243a481113a49e7749, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextManager
-  textUI: {fileID: 752385953}
+  textUI: {fileID: 1568668187}
   instance: {fileID: 473675694}
 --- !u!114 &477113008
 MonoBehaviour:
@@ -4234,12 +4234,12 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 50
+    m_FontSize: 150
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 150
-    m_Alignment: 4
+    m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -7774,7 +7774,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1568668186
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7816,8 +7816,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 7b638bbe02e5d3c44891295f0aaa61c7, type: 2}
+  m_sharedMaterial: {fileID: 2454870592278948986, guid: 7b638bbe02e5d3c44891295f0aaa61c7, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -7937,7 +7937,7 @@ GameObject:
   - component: {fileID: 1592108849}
   - component: {fileID: 1592108852}
   m_Layer: 0
-  m_Name: Hint2
+  m_Name: Book_Open
   m_TagString: Hint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10133,7 +10133,6 @@ GameObject:
   - component: {fileID: 114497867079992997}
   - component: {fileID: 114762043378293391}
   - component: {fileID: 136877098189778132}
-  - component: {fileID: 136877098189778133}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -10942,25 +10941,7 @@ MonoBehaviour:
   TextWindow: {fileID: 1508046974}
   sensitivity: 1
   scenario: {fileID: 0}
-  hintscenarios:
-  - {fileID: 11400000, guid: 6df1e9fd0c8838a41899e852e3056ce6, type: 2}
-  - {fileID: 11400000, guid: 0cb8f847d3cbcf441aa2b95cc77549b6, type: 2}
-  - {fileID: 11400000, guid: 71f76370d384b0c428acc8d7937fdb3a, type: 2}
-  textManager: {fileID: 136877098189778133}
---- !u!114 &136877098189778133
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1773622109151937}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3d8d160123d3a04dbeb6e90de80f6b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SignText
-  text: {fileID: 752385953}
-  textUI: {fileID: 752385953}
+  textManager: {fileID: 0}
 --- !u!4 &139059046784926201
 Transform:
   m_ObjectHideFlags: 0
@@ -29864,7 +29845,7 @@ GameObject:
   - component: {fileID: 7953498183463928977}
   - component: {fileID: 7953498183463928978}
   m_Layer: 0
-  m_Name: Hint3
+  m_Name: Book_Open
   m_TagString: Hint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

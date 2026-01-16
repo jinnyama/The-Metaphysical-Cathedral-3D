@@ -14,7 +14,7 @@ public class SignText : MonoBehaviour
     [SerializeField] Text text;
     private int count;
 
-    public TextMeshProUGUI textUI;
+    public Text textUI;
 
     private string[] currentTexts;
     private int index;
@@ -56,6 +56,7 @@ public class SignText : MonoBehaviour
     {
         isActive = false;
         textUI.gameObject.SetActive(false);
+        PlayerScript.instance.TextWindow.enabled = false;
     }
     // void SetText()
     // {
