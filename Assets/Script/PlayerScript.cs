@@ -94,21 +94,26 @@ public class PlayerScript : MonoBehaviour
         {
             // LogにHitしたオブジェクト名を出力
             Debug.Log("HitObject : " + raycastHit.collider.gameObject.name);
-            //アイテムオブジェクトを更新
-            seeObjects=raycastHit.collider.gameObject;
+            
             //アウトラインエフェクトを有効化
             
             switch (seeObjects.tag)
             {
                 case "item":
+                    //アイテムオブジェクトを更新
+                    seeObjects=raycastHit.collider.gameObject;
                     seeObjects.GetComponent<Outline>().enabled = true;
                     isGetItem = true;
                     break;
                 case "tereport":
+                    //アイテムオブジェクトを更新
+                    seeObjects=raycastHit.collider.gameObject;
                     seeObjects.GetComponent<Outline>().enabled = true;
                     isTereport = true;
                     break;
                 case "Hint":
+                    //アイテムオブジェクトを更新
+                    seeObjects=raycastHit.collider.gameObject;
                     seeObjects.GetComponent<Outline>().enabled = true;
                     isGetItem = false;
                     isTereport = false;
@@ -128,7 +133,7 @@ public class PlayerScript : MonoBehaviour
                 isTereport = false;
                 
                 //アウトラインエフェクトを無効化
-                //seeObjects.GetComponent<Outline>().enabled = false;
+                seeObjects.GetComponent<Outline>().enabled = false;
                 return;
             }
             //アイテムオブジェクトをリセット
