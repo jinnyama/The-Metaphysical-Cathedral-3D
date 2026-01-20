@@ -9,6 +9,7 @@ public class TextManager : MonoBehaviour
     public TextManager instance; 
 
     private string[] texts;
+    private string copystring;
     private int index;
     private bool isActive;
     void Start()
@@ -30,16 +31,22 @@ public class TextManager : MonoBehaviour
             {
                 textUI.text = texts[index];
             }
+            
             else
             {
                 EndText();
             }
+        }
+        if (Input.GetButtonDown("Fire1")&& copystring!="")
+        {
+            GameManager.Instance.CopyAction(copystring);
         }
     }
 
     public void StartText(TextScenario scenario)
     {
         texts = scenario.texts;
+        copystring = scenario.scenarioString;
         index = 0;
         isActive = true;
 

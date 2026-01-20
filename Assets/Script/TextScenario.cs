@@ -5,5 +5,5 @@ public class TextScenario : ScriptableObject
 {
     [TextArea(3, 10)]
     public string[] texts;
-    public string scenarioTitle;
+    public string scenarioString;
 }

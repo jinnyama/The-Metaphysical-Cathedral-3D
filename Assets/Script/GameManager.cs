@@ -71,10 +71,7 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.C) && TextScript.Instance.choisetext != ""&&Gamemode!="")//一般化完了
         {
-            //コピーテキストに「copy:」＋選択テキストを代入
-            TextScript.Instance.copytext.text= "copy:" + TextScript.Instance.choisetext;
-            //選択テキストの色を赤に変更
-            TextScript.Instance.diarytext[0].color = Color.red;
+           CopyAction( TextScript.Instance.choisetext);
         }
         if (Input.GetKeyDown(KeyCode.V) && TextScript.Instance.choisetext != "" && Gamemode == "signmode")//雲って用
         {
@@ -162,5 +159,21 @@ public class GameManager : MonoBehaviour
         StartCoroutine(FadeOut(spr,0.5f, Color.black));
          
     }
+    public void ResetGame()
+    {
+        // ゲームの状態を初期化する処理をここに追加
+        Gamemode = "";
+        currentquiznumber = 0;
+        IsBookmodeenable = false;
+        IsSignmodecheak = false;
+        // その他の初期化処理もここに追加
+    }
+    public void CopyAction(string copytext)
+    {
+        //コピーテキストに「copy:」＋選択テキストを代入
+            TextScript.Instance.copytext.text= "copy:" + copytext;
+            //選択テキストの色を赤に変更
+            TextScript.Instance.diarytext[0].color = Color.red;
+    } 
 
 }

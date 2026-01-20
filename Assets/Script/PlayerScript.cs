@@ -20,6 +20,8 @@ public class PlayerScript : MonoBehaviour
 
     public int maxitemCount = 5; //最大所持数
     public GameObject [] itemObjects;// プレイヤーが所持しているアイテムオブジェクト
+    public GameObject bookchildrenBotten;//本の子Bottenオブジェクト
+    
 
     [SerializeField] Camera     fpsCam;             // カメラ
     [SerializeField] float      distance = 0.8f;    // 検出可能な距離
@@ -29,7 +31,7 @@ public class PlayerScript : MonoBehaviour
     private bool isGetItem;     // アイテム取得フラグ
     private bool isTereport;    // テレポート取得フラグ
 
-    //private bool IstextWindowActive=false; //テキストウィンドウ表示フラグ
+    private bool IstextWindowActive=false; //テキストウィンドウ表示フラグ
 
     private Vector3 PlayerPosition;
     private Vector3 initialPosition;
@@ -39,7 +41,7 @@ public class PlayerScript : MonoBehaviour
     
     public TextScenario scenario;
     public TextScenario[] hintscenarios;
-    public SignText textManager;
+    public TextManager textManager;
     public static PlayerScript instance;
 
     // Start is called before the first frame update
@@ -63,6 +65,11 @@ public class PlayerScript : MonoBehaviour
         }
         PlayerPosition=this.transform.position;
         initialPosition=this.transform.position;
+        scenario=hintscenarios[0];
+        TextWindow.enabled = true;
+        textManager.StartText(scenario);
+        //bookchildrenBotten=TextWindow.GetComponentInChildren<GameObject>();
+        bookchildrenBotten.SetActive(false);
     }
 
     // Update is called once per frame
@@ -96,28 +103,26 @@ public class PlayerScript : MonoBehaviour
             Debug.Log("HitObject : " + raycastHit.collider.gameObject.name);
             
             //アウトラインエフェクトを有効化
-            
+            seeObjects=raycastHit.collider.gameObject;
+
             switch (seeObjects.tag)
             {
                 case "item":
                     //アイテムオブジェクトを更新
-                    seeObjects=raycastHit.collider.gameObject;
                     seeObjects.GetComponent<Outline>().enabled = true;
                     isGetItem = true;
                     break;
                 case "tereport":
                     //アイテムオブジェクトを更新
-                    seeObjects=raycastHit.collider.gameObject;
                     seeObjects.GetComponent<Outline>().enabled = true;
                     isTereport = true;
                     break;
                 case "Hint":
                     //アイテムオブジェクトを更新
-                    seeObjects=raycastHit.collider.gameObject;
                     seeObjects.GetComponent<Outline>().enabled = true;
                     isGetItem = false;
                     isTereport = false;
-                    //TextWindow.enabled = true; 
+                    TextWindow.enabled = true; 
                     break;
                 default:
                     break;
@@ -132,10 +137,11 @@ public class PlayerScript : MonoBehaviour
                 //テレポート取得フラグを下ろす
                 isTereport = false;
                 
-                //アウトラインエフェクトを無効化
-                seeObjects.GetComponent<Outline>().enabled = false;
+                
                 return;
             }
+            //アウトラインエフェクトを無効化
+            //seeObjects.GetComponent<Outline>().enabled = false;
             //アイテムオブジェクトをリセット
             seeObjects = null;
         }
@@ -207,26 +213,27 @@ public class PlayerScript : MonoBehaviour
             seeObjects.GetComponent<Outline>().enabled = false;
             seeObjects = null;
         }
-        if (Input.GetKeyDown(KeyCode.E) && !isGetItem && !isTereport && seeObjects!=null)
+        if (Input.GetKeyDown(KeyCode.E) && IstextWindowActive && seeObjects!=null)
         {
             Debug.Log("テキストウィンドウ表示");
             //テキストウィンドウ表示処理をここに追加
             switch (seeObjects.name)
             {
                 case "Hint1":
-                    scenario=hintscenarios[0];
-                    break;
-                case "Hint2":
                     scenario=hintscenarios[1];
                     break;
-                case "Hint3":
+                case "Hint2":
                     scenario=hintscenarios[2];
+                    break;
+                case "Hint3":
+                    scenario=hintscenarios[3];
                     break;
                 default:
                     break;
             }
             TextWindow.enabled = true;
             textManager.StartText(scenario);
+            bookchildrenBotten.SetActive(true);
             
         }
         
@@ -245,7 +252,7 @@ public class PlayerScript : MonoBehaviour
             {
                 activeItemIndex=0;
             }
-            Debug.Log("ActiveItemIndex Changed:"+ activeItemIndex);
+            //Debug.Log("ActiveItemIndex Changed:"+ activeItemIndex);
             mouseScrollDelta=0;
         }
         for(int i=0;i<maxActiveItemIndex;i++)
