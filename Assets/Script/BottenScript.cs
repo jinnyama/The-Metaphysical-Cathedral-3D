@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class BottenScript : MonoBehaviour
 {
+    //ボタンを押したときの処理          未使用
     public int quiznumber;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

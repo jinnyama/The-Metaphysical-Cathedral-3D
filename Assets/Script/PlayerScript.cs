@@ -8,6 +8,9 @@ using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour
 {
+    //Playerの基本スクリプト
+    //見ているオブジェクトの取得、アイテム取得、インベントリ管理、テキストウィンドウ表示指示など
+    // ===============================
     public GameObject  seeObjects ;// プレイヤーが見ているアイテムオブジェクト
     public string seeItemname;// プレイヤーが見ているアイテムname
 
@@ -122,7 +125,7 @@ public class PlayerScript : MonoBehaviour
                     seeObjects.GetComponent<Outline>().enabled = true;
                     isGetItem = false;
                     isTereport = false;
-                    TextWindow.enabled = true; 
+                    IstextWindowActive = true; 
                     break;
                 default:
                     break;
@@ -140,8 +143,12 @@ public class PlayerScript : MonoBehaviour
                 
                 return;
             }
-            //アウトラインエフェクトを無効化
-            //seeObjects.GetComponent<Outline>().enabled = false;
+            
+            if (seeObjects != null)
+            {
+                //アウトラインエフェクトを無効化
+                //seeObjects.GetComponent<Outline>().enabled = false;
+            }
             //アイテムオブジェクトをリセット
             seeObjects = null;
         }

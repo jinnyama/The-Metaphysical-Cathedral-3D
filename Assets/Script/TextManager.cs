@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class TextManager : MonoBehaviour
 {
+    //テキストウィンドウ管理用スクリプト
+    //テキスト開始処理、テキスト終了処理、テキスト進行管理など
     public Text textUI;
 
     public TextManager instance; 
@@ -58,5 +60,6 @@ public class TextManager : MonoBehaviour
     {
         isActive = false;
         textUI.gameObject.SetActive(false);
+        PlayerScript.instance.TextWindow.enabled = false;
     }
 }

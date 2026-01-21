@@ -11157,11 +11157,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1773622109151937}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3d8d160123d3a04dbeb6e90de80f6b3, type: 3}
+  m_Script: {fileID: 11500000, guid: 702109a9743d83243a481113a49e7749, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SignText
-  text: {fileID: 752385953}
+  m_EditorClassIdentifier: Assembly-CSharp::TextManager
   textUI: {fileID: 752385953}
+  instance: {fileID: 136877098189778133}
 --- !u!4 &139059046784926201
 Transform:
   m_ObjectHideFlags: 0

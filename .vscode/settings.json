@@ -67,5 +67,5 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "The-Metaphysical-Cathedral-3D.slnx"
+    "dotnet.defaultSolution": "Cathedral of letter.slnx"
 }
