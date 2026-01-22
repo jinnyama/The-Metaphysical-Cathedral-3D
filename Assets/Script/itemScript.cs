@@ -10,7 +10,7 @@ public class itemScript :PlayerScript
     //===============================
     // Iボタンでアイテムスロット上にあるアイテムを具現化＆アイテムスロット上のイラストを削除
     //マウス右クリックでアイテムの使用にする←本やツルハシ
-
+    
  
 
     // Start is called before the first frame update
@@ -22,8 +22,9 @@ public class itemScript :PlayerScript
     // Update is called once per frame
     void Update()
     {
-        
+       
 
     }
-
+    
+    
 }

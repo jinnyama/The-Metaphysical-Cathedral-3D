@@ -51,7 +51,7 @@ public class TextManager : MonoBehaviour
         copystring = scenario.scenarioString;
         index = 0;
         isActive = true;
-
+        PlayerScript.instance.TextWindow.enabled = true;
         textUI.gameObject.SetActive(true);
         textUI.text = texts[0];
     }

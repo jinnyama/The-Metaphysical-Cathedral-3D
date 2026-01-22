@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     public string Gamemode="";
     public int currentquiznumber=0;
     public bool IsBookmodeenable = false;
+    public bool IsPickaxemodeenable = false;
     public bool IsSignmodecheak = false;
     public static GameManager Instance;
 

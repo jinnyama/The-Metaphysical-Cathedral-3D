@@ -19,7 +19,7 @@ public class PlayerScript : MonoBehaviour
 
     public Text [] itemsrotChildrenText ;// アイテムスロットの子Textコンポーネント
     private int activeItemIndex = 0; //現在選択されているアイテムスロットのインデックス
-    private int maxActiveItemIndex = 0; //最大インデックス数
+    public int maxActiveItemIndex = 0; //最大インデックス数
 
     public int maxitemCount = 5; //最大所持数
     public GameObject [] itemObjects;// プレイヤーが所持しているアイテムオブジェクト
@@ -31,8 +31,8 @@ public class PlayerScript : MonoBehaviour
 
     public UnityEngine.UI.Image TextWindow; //テキストウィンドウ表示用
 
-    private bool isGetItem;     // アイテム取得フラグ
-    private bool isTereport;    // テレポート取得フラグ
+    protected bool isGetItem;     // アイテム取得フラグ
+    protected bool isTereport;    // テレポート取得フラグ
 
     private bool IstextWindowActive=false; //テキストウィンドウ表示フラグ
 
@@ -69,7 +69,7 @@ public class PlayerScript : MonoBehaviour
         PlayerPosition=this.transform.position;
         initialPosition=this.transform.position;
         scenario=hintscenarios[0];
-        TextWindow.enabled = true;
+        
         textManager.StartText(scenario);
         //bookchildrenBotten=TextWindow.GetComponentInChildren<GameObject>();
         bookchildrenBotten.SetActive(false);
@@ -144,104 +144,47 @@ public class PlayerScript : MonoBehaviour
                 return;
             }
             
-            if (seeObjects != null)
+            if (seeObjects != null&&seeObjects.GetComponent<Outline>()!=null)
             {
                 //アウトラインエフェクトを無効化
-                //seeObjects.GetComponent<Outline>().enabled = false;
+                seeObjects.GetComponent<Outline>().enabled = false;
+                
             }
             //アイテムオブジェクトをリセット
             seeObjects = null;
-        }
-
-
-        if (Input.GetKeyDown(KeyCode.E)&& isGetItem && itemCounts< maxitemCount)
-        {
-
-           
-            Debug.Log("ActiveItemIndex:"+ activeItemIndex);
-            Debug.Log("MaxActiveItemIndex:"+ maxActiveItemIndex);
-            //アイテム欄の画像を更新
-           switch (seeObjects.name)
-            {
-                case "Book":
-                    //アイテムをアイテム欄に追加
-                    itemObjects[itemCounts]= seeObjects;
-                    //最大インデックス数を更新
-                    maxActiveItemIndex=maxActiveItemIndex>4?4:maxActiveItemIndex+1;
-                    itemsrot[itemCounts].sprite=GameManager.Instance.book.sprite;
-                    itemsrot[itemCounts].color=new Color(1,1,1,1);
-                    itemsrotChildrenText[itemCounts].color=new Color(0,0,0,1);
-                    GameManager.Instance.IsBookmodeenable = true;
-                    //アイテムオブジェクトを削除
-                    Destroy(seeObjects);
-                    Debug.Log("本を取得しました");
-                    //itemCountsを増やす
-                    itemCounts += 1;
-                    break;
-                case "Pickaxe":
-                    //アイテムをアイテム欄に追加
-                    itemObjects[itemCounts]= seeObjects;
-                    //最大インデックス数を更新
-                    maxActiveItemIndex=maxActiveItemIndex>4?4:maxActiveItemIndex+1;
-                    itemsrot[itemCounts].sprite= GameManager.Instance.pickaxe.sprite;
-                    itemsrot[itemCounts].color=new Color(1,1,1,1);
-                    itemsrotChildrenText[itemCounts].color=new Color(0,0,0,1);
-                    //アイテムオブジェクトを削除
-                    Destroy(seeObjects);
-                    Debug.Log("つるはしを取得しました");
-                    //itemCountsを増やす
-                    itemCounts += 1;
-                    break;
-                //他のアイテムもここに追加
-            }
-
-
-            seeObjects = null;
-            
-            //Debug.Log("ItemCount:"+ itemCounts);
-        }
-        if (Input.GetKeyDown(KeyCode.E) && isTereport)
-        {
-            Debug.Log("テレポートしました");
-            //テレポート処理をここに追加
-            switch (seeObjects.name)
-            {
-                case "CastleGate":
-                    PlayerPosition=this.transform.position;
-                    this.transform.position=new Vector3(303.7f,0f,875f);
-                    break;
-                case "SanctuaryGate":
-                    PlayerPosition=this.transform.position;
-                    this.transform.position=new Vector3(508f,15.5f,-1190f);
-                    break;
-                //他のテレポートもここに追加
-            }
+            //アイテム取得フラグを下ろす
+            isGetItem = false;
+            //テレポート取得フラグを下ろす
             isTereport = false;
-            seeObjects.GetComponent<Outline>().enabled = false;
-            seeObjects = null;
+            //テキストウィンドウ表示フラグを下ろす
+            IstextWindowActive = false;
         }
-        if (Input.GetKeyDown(KeyCode.E) && IstextWindowActive && seeObjects!=null)
+        // if (Input.GetKeyDown(KeyCode.E)&& isGetItem && itemCounts< maxitemCount)
+        // {
+        //     itemGet();
+        // }
+        // if (Input.GetKeyDown(KeyCode.E) && isTereport)
+        // {
+        //     tereportUse();
+        // }
+        // if (Input.GetKeyDown(KeyCode.E) && IstextWindowActive && seeObjects!=null)
+        // {
+        //     textWindowActive();
+        // }
+        if (Input.GetKeyDown(KeyCode.E)&&seeObjects!=null)
         {
-            Debug.Log("テキストウィンドウ表示");
-            //テキストウィンドウ表示処理をここに追加
-            switch (seeObjects.name)
+            if(isGetItem&& itemCounts< maxitemCount)
             {
-                case "Hint1":
-                    scenario=hintscenarios[1];
-                    break;
-                case "Hint2":
-                    scenario=hintscenarios[2];
-                    break;
-                case "Hint3":
-                    scenario=hintscenarios[3];
-                    break;
-                default:
-                    break;
+                itemGet();
             }
-            TextWindow.enabled = true;
-            textManager.StartText(scenario);
-            bookchildrenBotten.SetActive(true);
-            
+            else if(isTereport)
+            {
+                tereportUse();
+            }
+            else if(IstextWindowActive)
+            {
+                textWindowActive();
+            }
         }
         
         //マウスホイールの入力を取得
@@ -277,5 +220,101 @@ public class PlayerScript : MonoBehaviour
 
        
 
+    }
+    public  void itemGet()
+    {
+        
+        switch (seeObjects.name)
+        {
+            case "Book":
+                //アイテムをアイテム欄に追加
+                itemObjects[itemCounts]= seeObjects;
+                //最大インデックス数を更新
+                maxActiveItemIndex=maxActiveItemIndex>4?4:maxActiveItemIndex+1;
+                itemsrot[itemCounts].sprite=GameManager.Instance.book.sprite;
+                itemsrot[itemCounts].color=new Color(1,1,1,1);
+                itemsrotChildrenText[itemCounts].color=new Color(0,0,0,1);
+                GameManager.Instance.IsBookmodeenable = true;
+                //アイテムオブジェクトを削除
+                Destroy(seeObjects);
+                Debug.Log("本を取得しました");
+                //itemCountsを増やす
+                itemCounts += 1;
+                break;
+            case "Pickaxe":
+                //アイテムをアイテム欄に追加
+                itemObjects[itemCounts]= seeObjects;
+                //最大インデックス数を更新
+                maxActiveItemIndex=maxActiveItemIndex>4?4:maxActiveItemIndex+1;
+                itemsrot[itemCounts].sprite=GameManager.Instance.pickaxe.sprite;
+                itemsrot[itemCounts].color=new Color(1,1,1,1);
+                itemsrotChildrenText[itemCounts].color=new Color(0,0,0,1);
+                GameManager.Instance.IsPickaxemodeenable = true;
+                //アイテムオブジェクトを削除
+                Destroy(seeObjects);
+                Debug.Log("ツルハシを取得しました");
+                //itemCountsを増やす
+                itemCounts += 1;
+                break;
+        }
+    }
+    // public void itemUse()
+    // {
+    //     switch (itemObjects[activeItemIndex].name)
+    //     {
+    //         case "Book":
+    //             //本の使用処理をここに追加
+    //             Debug.Log("本を使用しました");
+    //             break;
+    //         case "Pickaxe":
+    //             //ツルハシの使用処理をここに追加
+    //             Debug.Log("ツルハシを使用しました");
+    //             break;
+    //     }
+    // }
+    public void tereportUse()
+    {
+        
+        Debug.Log("テレポートしました");
+        //テレポート処理をここに追加
+        switch (seeObjects.name)
+        {
+            case "CastleGate":
+                PlayerPosition=this.transform.position;
+                    this.transform.position=new Vector3(303.7f,0f,875f);
+                break;
+            case "SanctuaryGate":
+                PlayerPosition=this.transform.position;
+                this.transform.position=new Vector3(508f,15.5f,-1190f);
+                break;
+            //他のテレポートもここに追加
+            default:
+                break;
+        }
+        isTereport = false;
+        seeObjects.GetComponent<Outline>().enabled = false;
+        seeObjects = null;
+    }
+    public void textWindowActive()
+    {
+        Debug.Log("テキストウィンドウ表示");
+            //テキストウィンドウ表示処理をここに追加
+            switch (seeObjects.name)
+        {
+            case "Hint1":
+                scenario=hintscenarios[1];
+                break;
+            case "Hint2":
+                scenario=hintscenarios[2];
+                break;
+            case "Hint3":
+                scenario=hintscenarios[3];
+                break;
+            default:
+                break;
+        }
+        textManager.StartText(scenario);
+        bookchildrenBotten.SetActive(true);
+        
     }
 }
