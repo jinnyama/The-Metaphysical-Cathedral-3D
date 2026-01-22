@@ -36,7 +36,24 @@ public class FirstPersonMovement : MonoBehaviour
         }
 
         // Get targetVelocity from input.
-        Vector2 targetVelocity =new Vector2( Input.GetAxis("Horizontal") * targetMovingSpeed, Input.GetAxis("Vertical") * targetMovingSpeed);
+        //Vector2 targetVelocity =new Vector2( Input.GetAxis("Horizontal") * targetMovingSpeed, Input.GetAxis("Vertical") * targetMovingSpeed);
+        // ===== ここから変更 =====
+
+        // WASD入力で方向を作る
+        Vector2 inputDir = Vector2.zero;
+
+        if (Input.GetKey(KeyCode.W)) inputDir.y += 1f;
+        if (Input.GetKey(KeyCode.S)) inputDir.y -= 1f;
+        if (Input.GetKey(KeyCode.D)) inputDir.x += 1f;
+        if (Input.GetKey(KeyCode.A)) inputDir.x -= 1f;
+
+        // 斜め移動が速くならないようにする
+        inputDir = inputDir.normalized;
+
+        // 入力 × スピード
+        Vector2 targetVelocity = inputDir * targetMovingSpeed;
+
+        // ===== ここまで変更 =====
 
         // Apply movement.
         rig.linearVelocity = transform.rotation * new Vector3(targetVelocity.x, GetComponent<Rigidbody>().linearVelocity.y, targetVelocity.y);

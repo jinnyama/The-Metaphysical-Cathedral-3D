@@ -71,7 +71,9 @@ public class AIPlayerScript : MonoBehaviour
             itemsrotChildrenText[i].color = new Color(0, 0, 0, 0);
 
             if (itemsrot[i].TryGetComponent(out Outline o))
-                o.OutlineColor = Color.black;
+            {
+                
+            }
         }
 
         PlayerPosition = transform.position;

@@ -8,7 +8,7 @@ public class TextManager : MonoBehaviour
     //テキスト開始処理、テキスト終了処理、テキスト進行管理など
     public Text textUI;
 
-    public TextManager instance; 
+    public static TextManager instance; 
 
     private string[] texts;
     private string copystring;
@@ -41,7 +41,7 @@ public class TextManager : MonoBehaviour
         }
         if (Input.GetButtonDown("Fire1")&& copystring!="")
         {
-            GameManager.Instance.CopyAction(copystring);
+            GameManager.Instance.LetterchangeAction(texts[index]);
         }
     }
 

@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.C) && TextScript.Instance.choisetext != ""&&Gamemode!="")//一般化完了
         {
-           CopyAction( TextScript.Instance.choisetext);
+           //CopyAction( TextScript.Instance.choisetext);
         }
         if (Input.GetKeyDown(KeyCode.V) && TextScript.Instance.choisetext != "" && Gamemode == "signmode")//雲って用
         {
@@ -169,12 +169,15 @@ public class GameManager : MonoBehaviour
         IsSignmodecheak = false;
         // その他の初期化処理もここに追加
     }
-    public void CopyAction(string copytext)
+    public void LetterchangeAction(string copytext)
     {
-        //コピーテキストに「copy:」＋選択テキストを代入
-            TextScript.Instance.copytext.text= "copy:" + copytext;
-            //選択テキストの色を赤に変更
-            TextScript.Instance.diarytext[0].color = Color.red;
+        ////コピーテキストに「copy:」＋選択テキストを代入
+        //TextScript.Instance.copytext.text= "copy:" + copytext;
+        ////選択テキストの色を赤に変更
+        //TextScript.Instance.diarytext[0].color = Color.red;
+        TextManager.instance.textUI.text = TextManager.instance.textUI.text.Remove(8,6);
+        TextManager.instance.textUI.text = TextManager.instance.textUI.text.Insert(8,"FEFF00");
+
     } 
 
 }

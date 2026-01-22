@@ -7,6 +7,8 @@ TagManager:
   - item
   - Textitem
   - tereport
+  - Hint
+  - Lake
   layers:
   - Default
   - TransparentFX

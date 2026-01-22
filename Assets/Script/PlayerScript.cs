@@ -64,7 +64,7 @@ public class PlayerScript : MonoBehaviour
             itemsrot[i].color =  new Color(1,1,1,0);
             itemsrotChildrenText[i]= itemsrot[i].GetComponentInChildren<Text>();
             itemsrotChildrenText[i].color=new Color(0,0,0,0);
-            itemsrot[i].GetComponent<Outline>().OutlineColor = Color.black;
+            itemsrot[i].GetComponent<QickOutline>().OutlineColor = Color.black;
         }
         PlayerPosition=this.transform.position;
         initialPosition=this.transform.position;
@@ -72,7 +72,7 @@ public class PlayerScript : MonoBehaviour
         
         textManager.StartText(scenario);
         //bookchildrenBotten=TextWindow.GetComponentInChildren<GameObject>();
-        bookchildrenBotten.SetActive(false);
+        //bookchildrenBotten.SetActive(false);
     }
 
     // Update is called once per frame
@@ -112,17 +112,17 @@ public class PlayerScript : MonoBehaviour
             {
                 case "item":
                     //アイテムオブジェクトを更新
-                    seeObjects.GetComponent<Outline>().enabled = true;
+                    seeObjects.GetComponent<QickOutline>().enabled = true;
                     isGetItem = true;
                     break;
                 case "tereport":
                     //アイテムオブジェクトを更新
-                    seeObjects.GetComponent<Outline>().enabled = true;
+                    seeObjects.GetComponent<QickOutline>().enabled = true;
                     isTereport = true;
                     break;
                 case "Hint":
                     //アイテムオブジェクトを更新
-                    seeObjects.GetComponent<Outline>().enabled = true;
+                    seeObjects.GetComponent<QickOutline>().enabled = true;
                     isGetItem = false;
                     isTereport = false;
                     IstextWindowActive = true; 
@@ -144,10 +144,10 @@ public class PlayerScript : MonoBehaviour
                 return;
             }
             
-            if (seeObjects != null&&seeObjects.GetComponent<Outline>()!=null)
+            if (seeObjects != null&&seeObjects.GetComponent<QickOutline>()!=null)
             {
                 //アウトラインエフェクトを無効化
-                seeObjects.GetComponent<Outline>().enabled = false;
+                seeObjects.GetComponent<QickOutline>().enabled = false;
                 
             }
             //アイテムオブジェクトをリセット
@@ -159,18 +159,7 @@ public class PlayerScript : MonoBehaviour
             //テキストウィンドウ表示フラグを下ろす
             IstextWindowActive = false;
         }
-        // if (Input.GetKeyDown(KeyCode.E)&& isGetItem && itemCounts< maxitemCount)
-        // {
-        //     itemGet();
-        // }
-        // if (Input.GetKeyDown(KeyCode.E) && isTereport)
-        // {
-        //     tereportUse();
-        // }
-        // if (Input.GetKeyDown(KeyCode.E) && IstextWindowActive && seeObjects!=null)
-        // {
-        //     textWindowActive();
-        // }
+        
         if (Input.GetKeyDown(KeyCode.E)&&seeObjects!=null)
         {
             if(isGetItem&& itemCounts< maxitemCount)
@@ -314,7 +303,7 @@ public class PlayerScript : MonoBehaviour
                 break;
         }
         textManager.StartText(scenario);
-        bookchildrenBotten.SetActive(true);
+        //bookchildrenBotten.SetActive(true);
         
     }
 }

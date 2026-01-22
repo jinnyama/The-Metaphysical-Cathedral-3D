@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 //アイテム取得やアイテム欄用のスクリプト
-public class itemScript :PlayerScript
+public class itemScript :MonoBehaviour
 {
     //アイテムの処理
     //===============================
