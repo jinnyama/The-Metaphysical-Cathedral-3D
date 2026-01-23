@@ -27,14 +27,7 @@ public class BookScript : MonoBehaviour
         {
             booktext[i].text="";
         }
-        for (int i=0;i<bookstring.Length;i++)
-        {
-            //もう一回きちんと考え直すBookTextSrotの透明化
-            BookTextSrot[i].GetComponent<Image>().color=new Color(1,1,1,0);
-            BookTextSrot[i].GetComponent<Outline>().effectColor= new Color(0,0,0,0);
-            
-
-        }
+        
 
 
     }
@@ -42,8 +35,14 @@ public class BookScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.Instance.Gamemode != "bookmode")
+        {
+            HideBookTexts();
+        }
         if(GameManager.Instance.Gamemode=="bookmode")
         {
+            ShowBookTexts();
+            //booktextの更新
             for (int i = 0; i < bookstring.Length; i++)
             {
                 BookTextSrot[i].enabled=true;
@@ -83,5 +82,23 @@ public class BookScript : MonoBehaviour
 
         }
 
+    }
+
+    // BookTextSrotの透明化処理
+    void HideBookTexts()
+    {
+        for (int i = 0; i < BookTextSrot.Length; i++)
+        {
+            BookTextSrot[i].color= new Color(1, 1, 1, 0);
+            //BookTextSrot[i].GetComponent<Outline>().effectColor = new Color(0, 0, 0, 0);
+        }
+    }
+    void ShowBookTexts()
+    {
+        for (int i = 0; i < BookTextSrot.Length; i++)
+        {
+            BookTextSrot[i].color = new Color(1, 1, 1, 1);
+            //BookTextSrot[i].GetComponent<Outline>().effectColor = Color.black;
+        }
     }
 }

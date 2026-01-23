@@ -80,10 +80,7 @@ public class PlayerScript : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            this.transform.position=PlayerPosition;
-            Debug.Log(PlayerPosition);
-            Debug.Log("初期位置にリセットしました");
-            PlayerPosition=initialPosition;
+            
         }
         // Rayはカメラの位置からとばす
         var rayStartPosition   = fpsCam.transform.position;
@@ -261,6 +258,13 @@ public class PlayerScript : MonoBehaviour
     //             break;
     //     }
     // }
+    public void initialtereport()
+    {
+        
+    
+        this.transform.position=PlayerPosition;
+        PlayerPosition=initialPosition;
+    }
     public void tereportUse()
     {
         
@@ -270,7 +274,7 @@ public class PlayerScript : MonoBehaviour
         {
             case "CastleGate":
                 PlayerPosition=this.transform.position;
-                    this.transform.position=new Vector3(303.7f,0f,875f);
+                this.transform.position=new Vector3(303.7f,0f,875f);
                 break;
             case "SanctuaryGate":
                 PlayerPosition=this.transform.position;
@@ -305,5 +309,13 @@ public class PlayerScript : MonoBehaviour
         textManager.StartText(scenario);
         //bookchildrenBotten.SetActive(true);
         
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag=="Lake")
+        {
+            Debug.Log("地面に着地しました");
+            initialtereport();
+        }
     }
 }
