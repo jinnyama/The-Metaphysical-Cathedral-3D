@@ -40,7 +40,7 @@ public class PlayerScript : MonoBehaviour
     private Vector3 initialPosition;
 
     public float sensitivity = 1;
-    private float mouseScrollDelta;
+    public float mouseScrollDelta;
     
     public TextScenario scenario;
     public TextScenario[] hintscenarios;
@@ -68,8 +68,8 @@ public class PlayerScript : MonoBehaviour
         }
         PlayerPosition=this.transform.position;
         initialPosition=this.transform.position;
-        scenario=hintscenarios[0];
         
+        scenario=hintscenarios[0];
         textManager.StartText(scenario);
         //bookchildrenBotten=TextWindow.GetComponentInChildren<GameObject>();
         //bookchildrenBotten.SetActive(false);
@@ -191,22 +191,61 @@ public class PlayerScript : MonoBehaviour
             //Debug.Log("ActiveItemIndex Changed:"+ activeItemIndex);
             mouseScrollDelta=0;
         }
-        for(int i=0;i<maxActiveItemIndex;i++)
+        if(GameManager.Instance.Gamemode=="")
         {
-            
-            if(i==activeItemIndex)
-            {
-                itemsrotChildrenText[i].color=Color.yellow;
-            }
-            else
-            {
-                itemsrotChildrenText[i].color = Color.black;
-            }
+           ItemLateUpdate();
+        }
+        if(GameManager.Instance.Gamemode=="bookmode")
+        {
+            TextLateUpdate();
+        }
+        //コピー＆ペースト機能
+        if (Input.GetKeyDown(KeyCode.C))//一般化完了
+        {
+           //CopyAction( TextScript.Instance.choisetext);
+           BookScript.instance.CopyAction();
+
+        }
+        if (Input.GetKeyDown(KeyCode.V) && GameManager.Instance.Gamemode == "signmode")//一般化完了
+        {
+            BookScript.instance.PasteAction();
         }
 
        
-
     }
+    private void ItemLateUpdate()
+    {
+        //アイテムスロットのアウトラインエフェクト制御
+        for(int i=0;i<itemsrot.Length;i++)
+        {
+            if(i==activeItemIndex)
+            {
+                itemsrot[i].GetComponent<QickOutline>().OutlineColor= Color.yellow;
+            }
+            else
+            {
+                itemsrot[i].GetComponent<QickOutline>().OutlineColor = Color.black;
+            }
+        }
+        
+    }
+    private void TextLateUpdate()
+    {
+        //テキストウィンドウ表示制御
+        for(int i=0;i<BookScript.instance.bookstring.Length;i++)
+        {
+            if(i==BookScript.instance.activetextIndex)
+            {
+                BookScript.instance.bookstring[i]=BookScript.instance.bookstring[i].Replace("<color=black>","<color=red>");
+            }
+            else
+            {
+                BookScript.instance.bookstring[i]=BookScript.instance.bookstring[i];
+            }
+        }
+       
+    }
+
     public  void itemGet()
     {
         
@@ -260,9 +299,7 @@ public class PlayerScript : MonoBehaviour
     // }
     public void initialtereport()
     {
-        
-    
-        this.transform.position=PlayerPosition;
+        transform.position=PlayerPosition;
         PlayerPosition=initialPosition;
     }
     public void tereportUse()
@@ -285,7 +322,7 @@ public class PlayerScript : MonoBehaviour
                 break;
         }
         isTereport = false;
-        seeObjects.GetComponent<Outline>().enabled = false;
+        seeObjects.GetComponent<QickOutline>().enabled = false;
         seeObjects = null;
     }
     public void textWindowActive()
@@ -317,5 +354,19 @@ public class PlayerScript : MonoBehaviour
             Debug.Log("地面に着地しました");
             initialtereport();
         }
+    }
+    public int ChoiseText()
+    {
+
+        //コピー用テキストを返す　未完成
+        //bookmodeの時アクティブなbookstiringのテキストを返す
+        //違ったらテキストを返す
+        //もう一度整理すること
+        if(GameManager.Instance.Gamemode=="bookmode")
+        {
+            return 1;
+        }
+
+        return 0;
     }
 }
