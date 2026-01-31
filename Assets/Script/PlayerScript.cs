@@ -136,9 +136,6 @@ public class PlayerScript : MonoBehaviour
                 isGetItem = false;
                 //テレポート取得フラグを下ろす
                 isTereport = false;
-                
-                
-                return;
             }
             
             if (seeObjects != null&&seeObjects.GetComponent<QickOutline>()!=null)
@@ -220,11 +217,11 @@ public class PlayerScript : MonoBehaviour
         {
             if(i==activeItemIndex)
             {
-                itemsrot[i].GetComponent<QickOutline>().OutlineColor= Color.yellow;
+                itemsrotChildrenText[i].color = Color.yellow;
             }
             else
             {
-                itemsrot[i].GetComponent<QickOutline>().OutlineColor = Color.black;
+                itemsrotChildrenText[i].color = Color.black;
             }
         }
         
