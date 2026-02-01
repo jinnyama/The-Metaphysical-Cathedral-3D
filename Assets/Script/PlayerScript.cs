@@ -138,7 +138,7 @@ public class PlayerScript : MonoBehaviour
                 isTereport = false;
                 
                 
-                return;
+               
             }
             
             if (seeObjects != null&&seeObjects.GetComponent<QickOutline>()!=null)
@@ -177,20 +177,48 @@ public class PlayerScript : MonoBehaviour
         mouseScrollDelta=Input.mouseScrollDelta.y * sensitivity;
         
 
-        //mauseScrollDeltaの値に応じてactiveItemIndexを増減
-        if(activeItemIndex>=0 && activeItemIndex<maxActiveItemIndex)
+        if(GameManager.Instance.Gamemode=="")
         {
-            activeItemIndex+= (int)mouseScrollDelta; 
-            if(activeItemIndex>=maxActiveItemIndex)
+            //アイテムスロット選択処理
+            if(mouseScrollDelta>0f)
             {
-                activeItemIndex=maxActiveItemIndex-1;
+                activeItemIndex= (activeItemIndex + 1) % maxActiveItemIndex;
+                Debug.Log("アイテムスロット選択:"+ activeItemIndex);
             }
-            else if(activeItemIndex<0)
+            else if(mouseScrollDelta<0f)
             {
-                activeItemIndex=0;
+                activeItemIndex= (activeItemIndex - 1 + maxActiveItemIndex) % maxActiveItemIndex;
+                Debug.Log("アイテムスロット選択:"+ activeItemIndex);
             }
-            //Debug.Log("ActiveItemIndex Changed:"+ activeItemIndex);
-            mouseScrollDelta=0;
+        //     //mauseScrollDeltaの値に応じてactiveItemIndexを増減
+        // if(activeItemIndex>=0 && activeItemIndex<maxActiveItemIndex)
+        // {
+        //     activeItemIndex+= (int)mouseScrollDelta; 
+        //     if(activeItemIndex>=maxActiveItemIndex)
+        //     {
+        //         activeItemIndex=maxActiveItemIndex-1;
+        //     }
+        //     else if(activeItemIndex<0)
+        //     {
+        //         activeItemIndex=0;
+        //     }
+        //     //Debug.Log("ActiveItemIndex Changed:"+ activeItemIndex);
+        //     mouseScrollDelta=0;
+        // }
+        }
+        else if(GameManager.Instance.Gamemode=="bookmode")
+        {
+            //テキストウィンドウ選択処理
+            if(mouseScrollDelta>0f)
+            {
+                activeItemIndex= (activeItemIndex + 1) % BookScript.instance.maxtextindex;
+                Debug.Log("テキストウィンドウ選択:"+ activeItemIndex);
+            }
+            else if(mouseScrollDelta<0f)
+            {
+                activeItemIndex= (activeItemIndex - 1 + BookScript.instance.maxtextindex) % BookScript.instance.maxtextindex;
+                Debug.Log("テキストウィンドウ選択:"+ activeItemIndex);
+            }
         }
         //アイテムスロットのアウトラインエフェクト制御
         for(int i=0;i<itemsrot.Length;i++)
@@ -223,7 +251,7 @@ public class PlayerScript : MonoBehaviour
            BookScript.instance.CopyAction();
 
         }
-        if (Input.GetKeyDown(KeyCode.V) && GameManager.Instance.Gamemode == "signmode")//一般化完了
+        if (Input.GetKeyDown(KeyCode.V) && GameManager.Instance.Gamemode == "")//一般化完了
         {
             BookScript.instance.PasteAction();
         }
@@ -250,15 +278,30 @@ public class PlayerScript : MonoBehaviour
     private void TextLateUpdate()
     {
         //テキストウィンドウ表示制御
-        for(int i=0;i<BookScript.instance.bookstring.Length;i++)
+        for(int i=0;i<BookScript.instance.bookstring.Length-1;i++)
         {
-            if(i==BookScript.instance.activetextIndex)
+            if(i==activeItemIndex)
             {
                 BookScript.instance.bookstring[i]=BookScript.instance.bookstring[i].Replace("<color=black>","<color=red>");
             }
             else
             {
-                BookScript.instance.bookstring[i]=BookScript.instance.bookstring[i];
+                Debug.Log("1"+BookScript.instance);
+                Debug.Log("2"+BookScript.instance.bookstring);
+                Debug.Log("3"+BookScript.instance.bookstring[i]);
+                if(BookScript.instance.bookstring[i]==null)
+                {
+                    continue;
+                }
+                int startindex =BookScript.instance.bookstring[i].IndexOf("<color=red>");
+                if(startindex>=0)
+                {
+                    BookScript.instance.bookstring[i]=BookScript.instance.bookstring[i].Replace("<color=red>","<color=black>");
+                }
+                else
+                {
+                    BookScript.instance.bookstring[i]=BookScript.instance.bookstring[i];
+                }
             }
         }
        

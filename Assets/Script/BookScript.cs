@@ -36,25 +36,6 @@ public class BookScript : MonoBehaviour
             //マウスホイールの入力を取得
             //textmouseScrollDelta=PlayerScript.instance.mouseScrollDelta;
             ShowBookTexts();
-            //ホイール検知
-            // //activetextIndexの変更
-            // if(Input.GetKeyDown(KeyCode.RightArrow))
-            // {
-            //     activetextIndex++;
-            // }
-            // if(Input.GetKeyDown(KeyCode.LeftArrow))
-            // {
-            //     activetextIndex--;
-            // }
-            // //activetextIndexの範囲制限
-            // if(activetextIndex>maxtextindex)
-            // {
-            //     activetextIndex=maxtextindex;
-            // }
-            // else if(activetextIndex<0)
-            // {
-            //     activetextIndex=0;
-            // }
             
             for(int i=0;i<maxtextindex;i++)
             {
@@ -110,11 +91,13 @@ public class BookScript : MonoBehaviour
         string pastetext=TextManager.instance.textUI.text;
         int startindex = pastetext.IndexOf(TextManager.instance.startstring);
         int endIndex = pastetext.IndexOf(TextManager.instance.endstring);
+        Debug.Log("ペースト処理"+startindex+" "+endIndex);
         if (startindex >= 0&& endIndex > startindex)
         {
+            
             copystring = pastetext.Substring(startindex+TextManager.instance.startstring.Length, endIndex- (startindex + TextManager.instance.startstring.Length));
                 
         }
-        TextManager.instance.textUI.text=TextManager.instance.textUI.text.Replace(copystring,copytext.text);
+        TextManager.instance.textUI.text=TextManager.instance.textUI.text.Replace(copystring,copytext.text[5..]);
     }
 }
