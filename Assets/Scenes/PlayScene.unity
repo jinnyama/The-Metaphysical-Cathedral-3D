@@ -11855,7 +11855,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27b67ddb3d23b8340b125aede56d7e8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  key: 304
+  key: 306
   movement: {fileID: 114963310868366173}
   movementSpeed: 2
   headToLower: {fileID: 4490258608037513}
@@ -11876,7 +11876,7 @@ MonoBehaviour:
   speed: 5
   canRun: 1
   runSpeed: 9
-  runningKey: 306
+  runningKey: 304
 --- !u!23 &122048962070766992
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -40536,9 +40536,10 @@ GameObject:
   - component: {fileID: 5223796492278389674}
   - component: {fileID: 8041828537180598112}
   - component: {fileID: 413738712027632553}
+  - component: {fileID: 9210279803391857680}
   m_Layer: 0
   m_Name: house-red_001
-  m_TagString: Untagged
+  m_TagString: Hint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -42986,6 +42987,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2130998021}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9210279803391857680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8402217180502953653}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QickOutline
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 0, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &9222988866833309271
 GameObject:
   m_ObjectHideFlags: 0

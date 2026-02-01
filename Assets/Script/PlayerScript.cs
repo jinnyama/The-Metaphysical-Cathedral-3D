@@ -175,11 +175,12 @@ public class PlayerScript : MonoBehaviour
         
         //マウスホイールの入力を取得
         mouseScrollDelta=Input.mouseScrollDelta.y * sensitivity;
+        
 
         //mauseScrollDeltaの値に応じてactiveItemIndexを増減
         if(activeItemIndex>=0 && activeItemIndex<maxActiveItemIndex)
         {
-            activeItemIndex+= (int)mouseScrollDelta;
+            activeItemIndex+= (int)mouseScrollDelta; 
             if(activeItemIndex>=maxActiveItemIndex)
             {
                 activeItemIndex=maxActiveItemIndex-1;
@@ -191,14 +192,30 @@ public class PlayerScript : MonoBehaviour
             //Debug.Log("ActiveItemIndex Changed:"+ activeItemIndex);
             mouseScrollDelta=0;
         }
+        //アイテムスロットのアウトラインエフェクト制御
+        for(int i=0;i<itemsrot.Length;i++)
+        {
+            if(i==activeItemIndex)
+            {
+                itemsrot[i].GetComponent<QickOutline>().OutlineColor= Color.yellow;
+            }
+            else
+            {
+                itemsrot[i].GetComponent<QickOutline>().OutlineColor = Color.black;
+            }
+        }
+        
+
         if(GameManager.Instance.Gamemode=="")
         {
-           ItemLateUpdate();
+            Debug.Log("ItemLateUpdate Called:"+ activeItemIndex);
+            ItemLateUpdate();
         }
         if(GameManager.Instance.Gamemode=="bookmode")
         {
             TextLateUpdate();
         }
+
         //コピー＆ペースト機能
         if (Input.GetKeyDown(KeyCode.C))//一般化完了
         {
@@ -216,15 +233,16 @@ public class PlayerScript : MonoBehaviour
     private void ItemLateUpdate()
     {
         //アイテムスロットのアウトラインエフェクト制御
-        for(int i=0;i<itemsrot.Length;i++)
+        for(int i=0;i<maxActiveItemIndex;i++)
         {
+            
             if(i==activeItemIndex)
             {
-                itemsrot[i].GetComponent<QickOutline>().OutlineColor= Color.yellow;
+                itemsrotChildrenText[i].color=Color.yellow;
             }
             else
             {
-                itemsrot[i].GetComponent<QickOutline>().OutlineColor = Color.black;
+                itemsrotChildrenText[i].color = Color.black;
             }
         }
         
@@ -331,6 +349,9 @@ public class PlayerScript : MonoBehaviour
             //テキストウィンドウ表示処理をここに追加
             switch (seeObjects.name)
         {
+            case "house-red_001":
+                scenario=hintscenarios[0];
+                break;
             case "Hint1":
                 scenario=hintscenarios[1];
                 break;
@@ -347,14 +368,6 @@ public class PlayerScript : MonoBehaviour
         //bookchildrenBotten.SetActive(true);
         
     }
-    private void OnCollisionEnter(Collision collision)
-    {
-        if(collision.gameObject.tag=="Lake")
-        {
-            Debug.Log("地面に着地しました");
-            initialtereport();
-        }
-    }
     public int ChoiseText()
     {
 
@@ -369,4 +382,13 @@ public class PlayerScript : MonoBehaviour
 
         return 0;
     }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag=="Lake")
+        {
+            Debug.Log("地面に着地しました");
+            initialtereport();
+        }
+    }
+    
 }
