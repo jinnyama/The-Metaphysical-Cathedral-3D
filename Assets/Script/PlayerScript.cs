@@ -21,9 +21,13 @@ public class PlayerScript : MonoBehaviour
     private int activeItemIndex = 0; //現在選択されているアイテムスロットのインデックス
     public int maxActiveItemIndex = 0; //最大インデックス数
 
+    public int activetextIndex=0;//現在選択されているテキストウィンドウのインデックス
+    private int maxtextindex=0; //最大テキストウィンドウインデックス数
+
     public int maxitemCount = 5; //最大所持数
     public GameObject [] itemObjects;// プレイヤーが所持しているアイテムオブジェクト
     public GameObject bookchildrenBotten;//本の子Bottenオブジェクト
+    public GameObject lake;//湖の位置座標
     
 
     [SerializeField] Camera     fpsCam;             // カメラ
@@ -35,6 +39,7 @@ public class PlayerScript : MonoBehaviour
     protected bool isTereport;    // テレポート取得フラグ
 
     private bool IstextWindowActive=false; //テキストウィンドウ表示フラグ
+    public string activesinarioName;//アクティブなシナリオ名格納用
 
     private Vector3 PlayerPosition;
     private Vector3 initialPosition;
@@ -46,6 +51,7 @@ public class PlayerScript : MonoBehaviour
     public TextScenario[] hintscenarios;
     public TextManager textManager;
     public static PlayerScript instance;
+    public Material skyboxes;
 
     // Start is called before the first frame update
     void Start()
@@ -56,8 +62,6 @@ public class PlayerScript : MonoBehaviour
         instance = this;
         Color c;
         c.a = .05f;
-        Debug.Log("ActiveItemIndex:"+ activeItemIndex);
-        Debug.Log("MaxActiveItemIndex:"+ maxActiveItemIndex);
         for(int i=0;i<itemsrot.Length;i++)
         {
             // Imageを取得してから、その色を変える（using UnityEngine.UI; が必要）
@@ -80,7 +84,7 @@ public class PlayerScript : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            
+            initialtereport();
         }
         // Rayはカメラの位置からとばす
         var rayStartPosition   = fpsCam.transform.position;
@@ -136,15 +140,8 @@ public class PlayerScript : MonoBehaviour
                 isGetItem = false;
                 //テレポート取得フラグを下ろす
                 isTereport = false;
-<<<<<<< HEAD
-                
-                
-               
-=======
->>>>>>> 89a39d27d44d5fffc30537031e337e3cee0c9663
             }
-            
-            if (seeObjects != null&&seeObjects.GetComponent<QickOutline>()!=null)
+            else if(seeObjects != null&&seeObjects.GetComponent<QickOutline>()!=null)
             {
                 //アウトラインエフェクトを無効化
                 seeObjects.GetComponent<QickOutline>().enabled = false;
@@ -182,49 +179,67 @@ public class PlayerScript : MonoBehaviour
 
         if(GameManager.Instance.Gamemode=="")
         {
-            //アイテムスロット選択処理
-            if(mouseScrollDelta>0f)
+            // //アイテムスロット選択処理
+            // if(mouseScrollDelta>0f)
+            // {
+            //     activeItemIndex= (activeItemIndex + 1) % maxActiveItemIndex;
+            //     Debug.Log("アイテムスロット選択:"+ activeItemIndex);
+            // }
+            // else if(mouseScrollDelta<0f)
+            // {
+            //     activeItemIndex= (activeItemIndex - 1 + maxActiveItemIndex) % maxActiveItemIndex;
+            //     Debug.Log("アイテムスロット選択:"+ activeItemIndex);
+            // }
+            //mauseScrollDeltaの値に応じてactiveItemIndexを増減
+            if(activeItemIndex>=0 && activeItemIndex<maxActiveItemIndex)
             {
-                activeItemIndex= (activeItemIndex + 1) % maxActiveItemIndex;
-                Debug.Log("アイテムスロット選択:"+ activeItemIndex);
+                switch (GameManager.Instance.Gamemode)
+                {
+                    case "":
+                        activeItemIndex+= (int)mouseScrollDelta;
+                        if(activeItemIndex>=maxActiveItemIndex)
+                        {
+                            activeItemIndex=maxActiveItemIndex-1;
+                        }
+                        else if(activeItemIndex<0)
+                        {
+                            activeItemIndex=0;
+                        }
+                        break;
+                    case "bookmode":
+                        activetextIndex+= (int)mouseScrollDelta;
+                        if(activetextIndex>=BookScript.instance.maxtextindex)
+                        {
+                            activetextIndex=BookScript.instance.maxtextindex-1;
+                        }
+                        else if(activeItemIndex<0)
+                        {
+                            activeItemIndex=0;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                //Debug.Log("ActiveItemIndex Changed:"+ activeItemIndex);
+                mouseScrollDelta=0;
             }
-            else if(mouseScrollDelta<0f)
-            {
-                activeItemIndex= (activeItemIndex - 1 + maxActiveItemIndex) % maxActiveItemIndex;
-                Debug.Log("アイテムスロット選択:"+ activeItemIndex);
-            }
-        //     //mauseScrollDeltaの値に応じてactiveItemIndexを増減
-        // if(activeItemIndex>=0 && activeItemIndex<maxActiveItemIndex)
-        // {
-        //     activeItemIndex+= (int)mouseScrollDelta; 
-        //     if(activeItemIndex>=maxActiveItemIndex)
-        //     {
-        //         activeItemIndex=maxActiveItemIndex-1;
-        //     }
-        //     else if(activeItemIndex<0)
-        //     {
-        //         activeItemIndex=0;
-        //     }
-        //     //Debug.Log("ActiveItemIndex Changed:"+ activeItemIndex);
-        //     mouseScrollDelta=0;
-        // }
         }
         else if(GameManager.Instance.Gamemode=="bookmode")
         {
             //テキストウィンドウ選択処理
             if(mouseScrollDelta>0f)
             {
-                activeItemIndex= (activeItemIndex + 1) % BookScript.instance.maxtextindex;
-                Debug.Log("テキストウィンドウ選択:"+ activeItemIndex);
+                activetextIndex= (activetextIndex + 1) % BookScript.instance.maxtextindex;
+                Debug.Log("テキストウィンドウ選択:"+ activetextIndex);
             }
             else if(mouseScrollDelta<0f)
             {
-                activeItemIndex= (activeItemIndex - 1 + BookScript.instance.maxtextindex) % BookScript.instance.maxtextindex;
-                Debug.Log("テキストウィンドウ選択:"+ activeItemIndex);
+                activetextIndex= (activetextIndex - 1 + BookScript.instance.maxtextindex) % BookScript.instance.maxtextindex;
+                Debug.Log("テキストウィンドウ選択:"+ activetextIndex);
             }
         }
         //アイテムスロットのアウトラインエフェクト制御
-        for(int i=0;i<itemsrot.Length;i++)
+        for(int i=0;i<maxActiveItemIndex;i++)
         {
             if(i==activeItemIndex)
             {
@@ -283,15 +298,12 @@ public class PlayerScript : MonoBehaviour
         //テキストウィンドウ表示制御
         for(int i=0;i<BookScript.instance.bookstring.Length-1;i++)
         {
-            if(i==activeItemIndex)
+            if(i==activetextIndex)
             {
                 BookScript.instance.bookstring[i]=BookScript.instance.bookstring[i].Replace("<color=black>","<color=red>");
             }
             else
             {
-                Debug.Log("1"+BookScript.instance);
-                Debug.Log("2"+BookScript.instance.bookstring);
-                Debug.Log("3"+BookScript.instance.bookstring[i]);
                 if(BookScript.instance.bookstring[i]==null)
                 {
                     continue;
@@ -397,6 +409,7 @@ public class PlayerScript : MonoBehaviour
         {
             case "house-red_001":
                 scenario=hintscenarios[0];
+
                 break;
             case "Hint1":
                 scenario=hintscenarios[1];
@@ -408,6 +421,7 @@ public class PlayerScript : MonoBehaviour
                 scenario=hintscenarios[3];
                 break;
             default:
+                scenario=null;
                 break;
         }
         textManager.StartText(scenario);

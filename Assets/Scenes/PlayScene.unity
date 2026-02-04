@@ -8957,7 +8957,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BookScript
   bookstring: []
   maxtextindex: 0
-  activetextIndex: 0
   freetextindex: 0
   copytext: {fileID: 66672740}
   BookText: {fileID: 906055301}
@@ -12032,13 +12031,16 @@ MonoBehaviour:
   - {fileID: 425005962}
   itemsrotChildrenText: []
   maxActiveItemIndex: 0
+  activetextIndex: 0
   maxitemCount: 5
   itemObjects:
   - {fileID: 0}
   bookchildrenBotten: {fileID: 0}
+  lake: {fileID: 7383293572837161087}
   fpsCam: {fileID: 20437471534847963}
   distance: 2
   TextWindow: {fileID: 1508046974}
+  activesinarioName: 
   sensitivity: 1
   mouseScrollDelta: 0
   scenario: {fileID: 0}
@@ -12048,6 +12050,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0cb8f847d3cbcf441aa2b95cc77549b6, type: 2}
   - {fileID: 11400000, guid: 71f76370d384b0c428acc8d7937fdb3a, type: 2}
   textManager: {fileID: 136877098189778133}
+  skyboxes: {fileID: 2100000, guid: e11f5b66aad75483b8cd16ee18a0c917, type: 2}
 --- !u!114 &136877098189778133
 MonoBehaviour:
   m_ObjectHideFlags: 0

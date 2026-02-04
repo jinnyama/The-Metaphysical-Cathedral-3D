@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 public class BookScript : MonoBehaviour
@@ -5,7 +6,7 @@ public class BookScript : MonoBehaviour
     public string []bookstring;
     public static BookScript instance;
     public int maxtextindex=0;
-    public int activetextIndex=0;
+    
     public int freetextindex=0;
     private int halfmaxindex=6;
 
@@ -77,12 +78,21 @@ public class BookScript : MonoBehaviour
     }
     public void CopyAction()
     {
+         if(bookstring.Contains("<color=black>"+copytext.text+"</color>\n"))
+        {
+            Debug.Log("既に同じテキストが存在します");
+            return;
+        }
         //コピーテキストにコピーしたテキストを代入
-        copytext.text = "copy:" + TextManager.instance.SerchCopystring(PlayerScript.instance.ChoiseText());
-        Debug.Log(TextManager.instance.SerchCopystring(PlayerScript.instance.ChoiseText()));
-        Debug.Log(PlayerScript.instance.ChoiseText());
+        copytext.text =TextManager.instance.SerchCopystring(PlayerScript.instance.ChoiseText());
         //bookstringにコピーしたテキストを代入
-        bookstring[freetextindex++]="<color=black>"+copytext.text[5..]+"</color>\n";
+        bookstring[freetextindex++]="<color=black>"+copytext.text+"</color>\n";
+        if (PlayerScript.instance.ChoiseText() == 1)
+        {
+            copytext.text=copytext.text.Replace("<color=red>","");
+            copytext.text=copytext.text.Replace("</color>","");
+        }
+        copytext.text = "copy:"+copytext.text;
         maxtextindex++;
 
     }
@@ -99,5 +109,18 @@ public class BookScript : MonoBehaviour
                 
         }
         TextManager.instance.textUI.text=TextManager.instance.textUI.text.Replace(copystring,copytext.text[5..]);
+        correctpaste(copytext.text[5..]);
+
+    }
+    public void correctpaste(string pastetext)
+    {
+        
+    
+        if( pastetext==PlayerScript.instance.scenario.scenarioString){
+            Vector3 pos =PlayerScript.instance.lake.transform.position;
+            pos.y -= 2.0f;
+            PlayerScript.instance.lake.transform.position = pos;
+            RenderSettings.skybox = PlayerScript.instance.skyboxes;            
+        }
     }
 }

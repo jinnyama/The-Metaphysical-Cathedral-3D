@@ -7,4 +7,5 @@ public class TextScenario : ScriptableObject
     [TextArea(3, 10)]
     public string[] texts;
     public int changeableindex;
+    public string scenarioString;
 }

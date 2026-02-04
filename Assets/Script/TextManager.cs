@@ -30,7 +30,7 @@ public class TextManager : MonoBehaviour
     {
         if (!isActive) return;
 
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             index++;
 
@@ -68,6 +68,7 @@ public class TextManager : MonoBehaviour
     {
         isActive = false;
         textUI.gameObject.SetActive(false);
+        PlayerScript.instance.scenario = null;
         PlayerScript.instance.TextWindow.enabled = false;
     }
     public string SerchCopystring(int mode)
@@ -88,7 +89,7 @@ public class TextManager : MonoBehaviour
         }
         else if (mode==1)
         {
-            text =BookScript.instance.bookstring[BookScript.instance.activetextIndex];
+            text =BookScript.instance.bookstring[PlayerScript.instance.activetextIndex];
             
             //text=BookScript.instance.choicetext;
             return text;

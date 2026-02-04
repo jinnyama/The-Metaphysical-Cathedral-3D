@@ -12,12 +12,12 @@ public class itemScript :MonoBehaviour
     // Iボタンでアイテムスロット上にあるアイテムを具現化＆アイテムスロット上のイラストを削除
     //マウス右クリックでアイテムの使用にする←本やツルハシ
     
- 
+    static public itemScript instance;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        instance = this;
     }
 
     // Update is called once per frame
@@ -26,6 +26,24 @@ public class itemScript :MonoBehaviour
        
 
     }
+    
+    public void itemget()
+    {
+        //アイテム取得処理
+    }
+    public void itemuse()
+    {
+        //アイテム使用処理
+    }
+    public void itemslotcolorchange()
+    {
+        //アイテムスロットの枠の色変更処理
+    }
+    public void itemrealize()
+    {
+        //アイテム具現化処理
+    }
+    
     
     
     
