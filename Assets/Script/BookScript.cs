@@ -98,6 +98,11 @@ public class BookScript : MonoBehaviour
     }
     public void PasteAction()
     {
+        if (copytext.text == "")
+        {
+            Debug.Log("コピーしたテキストがありません");
+            return;
+        }
         string pastetext=TextManager.instance.textUI.text;
         int startindex = pastetext.IndexOf(TextManager.instance.startstring);
         int endIndex = pastetext.IndexOf(TextManager.instance.endstring);
@@ -114,7 +119,10 @@ public class BookScript : MonoBehaviour
     }
     public void correctpaste(string pastetext)
     {
-        
+        if(PlayerScript.instance.scenario==null)
+        {
+            return;
+        }
     
         if( pastetext==PlayerScript.instance.scenario.scenarioString){
             Vector3 pos =PlayerScript.instance.lake.transform.position;
