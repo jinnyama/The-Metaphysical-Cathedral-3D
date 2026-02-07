@@ -9,6 +9,7 @@ TagManager:
   - tereport
   - Hint
   - Lake
+  - destroyable
   layers:
   - Default
   - TransparentFX

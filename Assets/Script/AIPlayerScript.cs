@@ -188,23 +188,23 @@ public class AIPlayerScript : MonoBehaviour
         else if (isTextWindowActive) HandleHint();
     }
 
-    void HandleGetItem()
+     void HandleGetItem()
     {
-        if (itemCounts >= maxitemCount) return;
+    //     if (itemCounts >= maxitemCount) return;
 
-        switch (seeObjects.name)
-        {
-            case "Book":
-                AddItem(GameManager.Instance.book.sprite, true);
-                break;
+    //     switch (seeObjects.name)
+    //     {
+    //         case "Book":
+    //             AddItem(GameManager.Instance.book.sprite, true);
+    //             break;
 
-            case "Pickaxe":
-                AddItem(GameManager.Instance.pickaxe.sprite, false);
-                break;
-        }
+    //         case "Pickaxe":
+    //             AddItem(GameManager.Instance.pickaxe.sprite, false);
+    //             break;
+    //     }
 
-        Destroy(seeObjects);
-        UpdateSeeObject(null);
+    //     Destroy(seeObjects);
+    //     UpdateSeeObject(null);
     }
 
     void AddItem(Sprite sprite, bool enableBookMode)

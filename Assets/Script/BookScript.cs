@@ -78,7 +78,9 @@ public class BookScript : MonoBehaviour
     }
     public void CopyAction()
     {
-         if(bookstring.Contains("<color=black>"+copytext.text+"</color>\n"))
+        Debug.Log(copytext.text);
+        //既に同じテキストが存在するか確認
+        if(copytext.text!=""&&bookstring.Contains(copytext.text[5..]))
         {
             Debug.Log("既に同じテキストが存在します");
             return;
@@ -91,6 +93,8 @@ public class BookScript : MonoBehaviour
         {
             copytext.text=copytext.text.Replace("<color=red>","");
             copytext.text=copytext.text.Replace("</color>","");
+            copytext.text=copytext.text.Replace("\n","");
+
         }
         copytext.text = "copy:"+copytext.text;
         maxtextindex++;
@@ -125,10 +129,41 @@ public class BookScript : MonoBehaviour
         }
     
         if( pastetext==PlayerScript.instance.scenario.scenarioString){
-            Vector3 pos =PlayerScript.instance.lake.transform.position;
-            pos.y -= 2.0f;
-            PlayerScript.instance.lake.transform.position = pos;
-            RenderSettings.skybox = PlayerScript.instance.skyboxes;            
+            
+                        
+        }
+        switch(pastetext)
+        {
+            case "晴れ":
+                //湖の水位を下げる
+                Vector3 pos =PlayerScript.instance.lake.transform.position;
+                pos.y -= 2.0f;
+                PlayerScript.instance.lake.transform.position = pos;
+                //スカイボックスの変更
+                RenderSettings.skybox = PlayerScript.instance.skyboxes;
+                break;
+            case "鋼":
+                //アイテム欄のイラスト変更
+                
+                //playerScript.instance.pickaxeの中身を鋼に変える
+                for(int i=0;i<PlayerScript.instance.itemObjects.Length;i++)
+                {
+                    if(PlayerScript.instance.itemObjects[i]!=null&& PlayerScript.instance.itemObjects[i]==PlayerScript.instance.woodpickaxeprefab)
+                    {
+                        PlayerScript.instance.itemObjects[i]=PlayerScript.instance.metalpickeaxeprefab;
+                        PlayerScript.instance.isDestroyItem=true;
+                        break;
+                    }
+                }
+                break;
+            case "":
+                break;
+            case "聖典":
+                break;
+            case "囲われている":
+                break;
+            default:
+                break;
         }
     }
 }

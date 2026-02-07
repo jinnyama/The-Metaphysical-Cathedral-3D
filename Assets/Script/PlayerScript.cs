@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
-using Microsoft.Unity.VisualStudio.Editor;
+//using Microsoft.Unity.VisualStudio.Editor;
 using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class PlayerScript : MonoBehaviour
     public UnityEngine.UI.Image [] itemsrot ;// プレイヤーが所持しているアイテムスロット
 
     public Text [] itemsrotChildrenText ;// アイテムスロットの子Textコンポーネント
-    private int activeItemIndex = 0; //現在選択されているアイテムスロットのインデックス
+    public int activeItemIndex = 0; //現在選択されているアイテムスロットのインデックス
     public int maxActiveItemIndex = 0; //最大インデックス数
 
     public int activetextIndex=0;//現在選択されているテキストウィンドウのインデックス
@@ -28,6 +29,17 @@ public class PlayerScript : MonoBehaviour
     public GameObject [] itemObjects;// プレイヤーが所持しているアイテムオブジェクト
     public GameObject bookchildrenBotten;//本の子Bottenオブジェクト
     public GameObject lake;//湖の位置座標
+    public GameObject bookprefab;//本オブジェクト
+    public GameObject woodpickaxeprefab;//木製ツルハシオブジェクト
+    public GameObject metalpickeaxeprefab;//鋼製ツルハシオブジェクト
+    
+    public GameObject woodkeyprefab;//木の鍵オブジェクト
+    public GameObject metalkeyprefab;//金属の鍵オブジェクト
+
+    public GameObject brigeprefab;//橋オブジェクト
+    
+
+    public GameObject UseitemObjects;//使用するアイテムオブジェクト
     
 
     [SerializeField] Camera     fpsCam;             // カメラ
@@ -37,6 +49,10 @@ public class PlayerScript : MonoBehaviour
 
     protected bool isGetItem;     // アイテム取得フラグ
     protected bool isTereport;    // テレポート取得フラグ
+
+    //protected bool isUseItem;     // アイテム使用フラグ
+
+    public bool isDestroyItem=false; // アイテム破壊フラグ
 
     private bool IstextWindowActive=false; //テキストウィンドウ表示フラグ
     public string activesinarioName;//アクティブなシナリオ名格納用
@@ -53,7 +69,11 @@ public class PlayerScript : MonoBehaviour
     public static PlayerScript instance;
     public Material skyboxes;
 
-    // Start is called before the first frame update
+    // public // Rayはカメラの位置からとばす
+    //     var rayStartPosition   = fpsCam.transform.position;
+    //     // Rayはカメラが向いてる方向にとばす
+    //     var rayDirection       = fpsCam.transform.forward.normalized;
+    // // Start is called before the first frame update
     void Start()
     {
         TextWindow.enabled=false;
@@ -72,7 +92,7 @@ public class PlayerScript : MonoBehaviour
         }
         PlayerPosition=this.transform.position;
         initialPosition=this.transform.position;
-        
+        brigeprefab.SetActive(false);  
         scenario=hintscenarios[0];
         textManager.StartText(scenario);
         //bookchildrenBotten=TextWindow.GetComponentInChildren<GameObject>();
@@ -97,14 +117,14 @@ public class PlayerScript : MonoBehaviour
         // Rayを飛ばす（out raycastHit でHitしたオブジェクトを取得する）
         var isHit = Physics.Raycast(rayStartPosition, rayDirection, out raycastHit, distance);
         
-        // Debug.DrawRay (Vector3 start(rayを開始する位置), Vector3 dir(rayの方向と長さ), Color color(ラインの色));
-        Debug.DrawRay(rayStartPosition, rayDirection * distance, Color.red);
+        //Debug.DrawRay (Vector3 start(rayを開始する位置), Vector3 dir(rayの方向と長さ), Color color(ラインの色));
+        //Debug.DrawRay(rayStartPosition, rayDirection * distance, Color.red);
         
         // なにか新しいアイテムを検出したら
         if (isHit && raycastHit.collider.gameObject.tag!="Untagget"&&seeObjects!=raycastHit.collider.gameObject)
         {
             // LogにHitしたオブジェクト名を出力
-            Debug.Log("HitObject : " + raycastHit.collider.gameObject.name);
+            //Debug.Log("HitObject : " + raycastHit.collider.gameObject.name);
             
             //アウトラインエフェクトを有効化
             seeObjects=raycastHit.collider.gameObject;
@@ -124,9 +144,12 @@ public class PlayerScript : MonoBehaviour
                 case "Hint":
                     //アイテムオブジェクトを更新
                     seeObjects.GetComponent<QickOutline>().enabled = true;
-                    isGetItem = false;
-                    isTereport = false;
                     IstextWindowActive = true; 
+                    break;
+                case "Textitem":
+                    //アイテムオブジェクトを更新
+                    seeObjects.GetComponent<QickOutline>().enabled = true;
+                    IstextWindowActive = true;
                     break;
                 default:
                     break;
@@ -170,6 +193,10 @@ public class PlayerScript : MonoBehaviour
             else if(IstextWindowActive)
             {
                 textWindowActive();
+                if (seeObjects.name == "Key_Rusty")
+                {
+                    itemGet();
+                }
             }
         }
         
@@ -179,18 +206,7 @@ public class PlayerScript : MonoBehaviour
 
         if(GameManager.Instance.Gamemode=="")
         {
-            // //アイテムスロット選択処理
-            // if(mouseScrollDelta>0f)
-            // {
-            //     activeItemIndex= (activeItemIndex + 1) % maxActiveItemIndex;
-            //     Debug.Log("アイテムスロット選択:"+ activeItemIndex);
-            // }
-            // else if(mouseScrollDelta<0f)
-            // {
-            //     activeItemIndex= (activeItemIndex - 1 + maxActiveItemIndex) % maxActiveItemIndex;
-            //     Debug.Log("アイテムスロット選択:"+ activeItemIndex);
-            // }
-            //mauseScrollDeltaの値に応じてactiveItemIndexを増減
+            //アイテムスロット選択処理
             if(activeItemIndex>=0 && activeItemIndex<maxActiveItemIndex)
             {
                 switch (GameManager.Instance.Gamemode)
@@ -220,7 +236,6 @@ public class PlayerScript : MonoBehaviour
                     default:
                         break;
                 }
-                //Debug.Log("ActiveItemIndex Changed:"+ activeItemIndex);
                 mouseScrollDelta=0;
             }
         }
@@ -230,12 +245,12 @@ public class PlayerScript : MonoBehaviour
             if(mouseScrollDelta>0f)
             {
                 activetextIndex= (activetextIndex + 1) % BookScript.instance.maxtextindex;
-                Debug.Log("テキストウィンドウ選択:"+ activetextIndex);
+                //Debug.Log("テキストウィンドウ選択:"+ activetextIndex);
             }
             else if(mouseScrollDelta<0f)
             {
                 activetextIndex= (activetextIndex - 1 + BookScript.instance.maxtextindex) % BookScript.instance.maxtextindex;
-                Debug.Log("テキストウィンドウ選択:"+ activetextIndex);
+                //Debug.Log("テキストウィンドウ選択:"+ activetextIndex);
             }
         }
         //アイテムスロットのアウトラインエフェクト制御
@@ -254,7 +269,7 @@ public class PlayerScript : MonoBehaviour
 
         if(GameManager.Instance.Gamemode=="")
         {
-            Debug.Log("ItemLateUpdate Called:"+ activeItemIndex);
+            //Debug.Log("ItemLateUpdate Called:"+ activeItemIndex);
             ItemLateUpdate();
         }
         if(GameManager.Instance.Gamemode=="bookmode")
@@ -272,6 +287,13 @@ public class PlayerScript : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.V) && GameManager.Instance.Gamemode == "")//一般化完了
         {
             BookScript.instance.PasteAction();
+        }
+        if(Input.GetKeyDown(KeyCode.B) && GameManager.Instance.Gamemode == "")
+        {
+            Debug.Log(itemObjects[activeItemIndex]);
+            Debug.Log("activeItemindex"+activeItemIndex);
+            //アイテム具現化処理
+            itemScript.instance.Itemrealize(itemObjects[activeItemIndex]);
         }
 
        
@@ -298,6 +320,10 @@ public class PlayerScript : MonoBehaviour
         //テキストウィンドウ表示制御
         for(int i=0;i<BookScript.instance.bookstring.Length-1;i++)
         {
+            if(BookScript.instance.bookstring[i]==null)
+            {
+                continue;
+            }
             if(i==activetextIndex)
             {
                 BookScript.instance.bookstring[i]=BookScript.instance.bookstring[i].Replace("<color=black>","<color=red>");
@@ -329,7 +355,7 @@ public class PlayerScript : MonoBehaviour
         {
             case "Book":
                 //アイテムをアイテム欄に追加
-                itemObjects[itemCounts]= seeObjects;
+                itemObjects[itemCounts]= bookprefab;
                 //最大インデックス数を更新
                 maxActiveItemIndex=maxActiveItemIndex>4?4:maxActiveItemIndex+1;
                 itemsrot[itemCounts].sprite=GameManager.Instance.book.sprite;
@@ -344,10 +370,10 @@ public class PlayerScript : MonoBehaviour
                 break;
             case "Pickaxe":
                 //アイテムをアイテム欄に追加
-                itemObjects[itemCounts]= seeObjects;
+                itemObjects[itemCounts]= woodpickaxeprefab;
                 //最大インデックス数を更新
                 maxActiveItemIndex=maxActiveItemIndex>4?4:maxActiveItemIndex+1;
-                itemsrot[itemCounts].sprite=GameManager.Instance.pickaxe.sprite;
+                itemsrot[itemCounts].sprite=GameManager.Instance.woodpickaxe.sprite;
                 itemsrot[itemCounts].color=new Color(1,1,1,1);
                 itemsrotChildrenText[itemCounts].color=new Color(0,0,0,1);
                 GameManager.Instance.IsPickaxemodeenable = true;
@@ -357,22 +383,30 @@ public class PlayerScript : MonoBehaviour
                 //itemCountsを増やす
                 itemCounts += 1;
                 break;
+            case "Key_Rusty":
+                //アイテムをアイテム欄に追加
+                itemObjects[itemCounts]= woodkeyprefab;
+                //最大インデックス数を更新
+                maxActiveItemIndex=maxActiveItemIndex>4?4:maxActiveItemIndex+1;
+                itemsrot[itemCounts].sprite=GameManager.Instance.woodkey.sprite;
+                itemsrot[itemCounts].color=new Color(1,1,1,1);
+                itemsrotChildrenText[itemCounts].color=new Color(0,0,0,1);
+                GameManager.Instance.IsPickaxemodeenable = true;
+                //アイテムオブジェクトを削除
+                Destroy(seeObjects);
+                Debug.Log("鍵を取得しました");
+                //itemCountsを増やす
+                itemCounts += 1;
+                break;
+            default:
+                break;
+
         }
     }
-    // public void itemUse()
-    // {
-    //     switch (itemObjects[activeItemIndex].name)
-    //     {
-    //         case "Book":
-    //             //本の使用処理をここに追加
-    //             Debug.Log("本を使用しました");
-    //             break;
-    //         case "Pickaxe":
-    //             //ツルハシの使用処理をここに追加
-    //             Debug.Log("ツルハシを使用しました");
-    //             break;
-    //     }
-    // }
+    public void itemUse()
+    {
+        
+    }
     public void initialtereport()
     {
         transform.position=PlayerPosition;
@@ -391,9 +425,12 @@ public class PlayerScript : MonoBehaviour
                 break;
             case "SanctuaryGate":
                 PlayerPosition=this.transform.position;
-                this.transform.position=new Vector3(508f,15.5f,-1190f);
+                this.transform.position=new Vector3(508f,17.5f,-1190f);
                 break;
             //他のテレポートもここに追加
+            case "DoorGate_Wooden_Right":
+                SceneManager.LoadScene("Goal");
+                break;
             default:
                 break;
         }
@@ -406,24 +443,40 @@ public class PlayerScript : MonoBehaviour
         Debug.Log("テキストウィンドウ表示");
             //テキストウィンドウ表示処理をここに追加
             switch (seeObjects.name)
-        {
+            {
             case "house-red_001":
-                scenario=hintscenarios[0];
-
+                scenario=hintscenarios[0];//プロローグ&家のヒントシナリオ
                 break;
             case "Hint1":
-                scenario=hintscenarios[1];
+                scenario=hintscenarios[1];//平原でのヒントシナリオ
                 break;
             case "Hint2":
-                scenario=hintscenarios[2];
+                scenario=hintscenarios[2];//王城のヒントシナリオ
                 break;
             case "Hint3":
-                scenario=hintscenarios[3];
+                scenario=hintscenarios[3];//教会のヒントシナリオ
+                break;
+            case "Hint4":
+                scenario=hintscenarios[4];//隠し扉Hint4のヒントシナリオ
+                break;
+            case "metal":
+                scenario=hintscenarios[5];//metalのヒントシナリオ
+                break;
+            case "Key_Rusty":
+                scenario=hintscenarios[6];//錆びた鍵のヒントシナリオ
+                break;
+            case "Door_Wooden_Round_Right":
+                scenario=hintscenarios[7];//木製の扉のヒントシナリオ
+                break;
+            case "SwitchSecret":
+                scenario=hintscenarios[8];//隠しスイッチのヒントシナリオ
+                brigeprefab.SetActive(true);
                 break;
             default:
                 scenario=null;
                 break;
-        }
+            }
+
         textManager.StartText(scenario);
         //bookchildrenBotten.SetActive(true);
         

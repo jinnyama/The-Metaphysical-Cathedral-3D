@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c700528fa5b6c844b00b561a860eaa0, type: 3}
+  m_Name: Hint1
+  m_EditorClassIdentifier: Assembly-CSharp::TextScenario
+  texts:
+  - "\u672C\u306F\u898B\u3064\u3051\u3089\u308C\u305F\u304B\u306A\uFF1F\n\n\t\t\t\t\t\t\t\t\t\t\u25BC"
+  - "\u30AF\u30EA\u30C3\u30AF\uFF06V\u30DC\u30BF\u30F3\u3067\u4E0B\u306E\u6587\u5B57\u306B\u30DA\u30FC\u30B9\u30C8\uFF01\n<color=red>\u304F\u3082\u308A</color>\t\t\n\t\t\t\t\t\t\t\t\t\t\u25BC"
+  - "\u305D\u308C\u3058\u3083\u3042\u307E\u305F\u5F8C\u3067\uFF01\n\t\t\t\t\t\t\t\t\t\t\u25BC"
+  changeableindex: 1
+  scenarioString: "\u6674\u308C"

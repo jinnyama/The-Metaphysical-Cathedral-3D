@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,7 +7,11 @@ public class GameManager : MonoBehaviour
 {
     public   Sprite[] image;//背景用←Skyboxに変更予定
     public Image book;
-    public Image pickaxe;
+    public Image woodpickaxe;
+    public Image metalpickaxe;
+    public Image woodkey;
+    public Image metalkey;
+
     private SpriteRenderer sign;//看板
     private SpriteRenderer black;
     
@@ -27,8 +32,10 @@ public class GameManager : MonoBehaviour
 
         
         book = GameObject.Find("book").GetComponent<Image>();
-        pickaxe = GameObject.Find("pickaxe").GetComponent<Image>();
-
+        woodpickaxe = GameObject.Find("pickaxe").GetComponent<Image>();
+        metalpickaxe = GameObject.Find("metalpickaxe").GetComponent<Image>();
+        woodkey = GameObject.Find("woodkey").GetComponent<Image>();
+        metalkey = GameObject.Find("ironkey").GetComponent<Image>();
         // 初期状態は透明
         Color c=book.color;
         c.a = 0f;
@@ -41,12 +48,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         
-        if (Input.GetKeyDown(KeyCode.B) && Gamemode == ""&& IsBookmodeenable)
-        {
-            StartCoroutine(ImageFadeIn(book,1.0f, Color.white));
-            Gamemode = "bookmode";
-            //IsBookmodecheak = true;
-        }
+        
         if (Input.GetKeyDown(KeyCode.Escape) && Gamemode=="bookmode" )
         {
             StartCoroutine(ImageFadeOut(book,1.0f,Color.white));
@@ -74,6 +76,21 @@ public class GameManager : MonoBehaviour
 
 
     }
+    public void EnterBookmode()
+    {
+        if (Gamemode==""&&IsBookmodeenable)
+        {
+            StartCoroutine(ImageFadeIn(book,1.0f, Color.white));
+            Gamemode = "bookmode";
+            //IsBookmodecheak = true;
+        }
+    }
+    public void ExitBookmode()
+    {
+        Gamemode = "";
+        StartCoroutine(ImageFadeOut(book,1.0f,Color.white));
+    }
+    
     private System.Collections.IEnumerator FadeIn(SpriteRenderer spr,float duration,Color c )
     {
         float elapsed = 0f;

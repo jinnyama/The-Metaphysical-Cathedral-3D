@@ -1,91 +1,91 @@
-using UnityEngine;
-using UnityEditor;
+// using UnityEngine;
+// using UnityEditor;
 
-public class PrefabPaletteWindow : EditorWindow
-{
-    private GameObject[] prefabs;
-    private Vector2 scrollPos;
+// public class PrefabPaletteWindow : EditorWindow
+// {
+//     private GameObject[] prefabs;
+//     private Vector2 scrollPos;
 
-    [MenuItem("GameObject/Prefab Palette")]
-    public static void ShowWindow()
-    {
-        GetWindow<PrefabPaletteWindow>("Prefab Palette");
-    }
+//     [MenuItem("GameObject/Prefab Palette")]
+//     public static void ShowWindow()
+//     {
+//         GetWindow<PrefabPaletteWindow>("Prefab Palette");
+//     }
 
-    private void OnEnable()
-    {
-        LoadPrefabs();
-    }
+//     private void OnEnable()
+//     {
+//         LoadPrefabs();
+//     }
 
-    void LoadPrefabs()
-    {
-        // “Ç‚İ‚İ‚½‚¢ƒtƒHƒ‹ƒ_‚ğw’è
-        string[] guids = AssetDatabase.FindAssets("t:Prefab", new[] { "Assets/Models" });
-        prefabs = new GameObject[guids.Length];
+//     void LoadPrefabs()
+//     {
+//         // ï¿½Ç‚İï¿½ï¿½İ‚ï¿½ï¿½ï¿½ï¿½tï¿½Hï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½wï¿½ï¿½
+//         string[] guids = AssetDatabase.FindAssets("t:Prefab", new[] { "Assets/Models" });
+//         prefabs = new GameObject[guids.Length];
 
-        for (int i = 0; i < guids.Length; i++)
-        {
-            string path = AssetDatabase.GUIDToAssetPath(guids[i]);
-            prefabs[i] = AssetDatabase.LoadAssetAtPath<GameObject>(path);
-        }
-    }
+//         for (int i = 0; i < guids.Length; i++)
+//         {
+//             string path = AssetDatabase.GUIDToAssetPath(guids[i]);
+//             prefabs[i] = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+//         }
+//     }
 
-    private void OnGUI()
-    {
-        if (GUILayout.Button("Reload Prefabs"))
-        {
-            LoadPrefabs();
-        }
+//     private void OnGUI()
+//     {
+//         if (GUILayout.Button("Reload Prefabs"))
+//         {
+//             LoadPrefabs();
+//         }
 
-        scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
+//         scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
 
-        int columns = 4; // ‰¡•À‚Ñ‚Ì”
-        int count = 0;
+//         int columns = 4; // ï¿½ï¿½ï¿½ï¿½ï¿½Ñ‚Ìï¿½
+//         int count = 0;
 
-        EditorGUILayout.BeginHorizontal();
-        foreach (var prefab in prefabs)
-        {
-            if (prefab == null) continue;
+//         EditorGUILayout.BeginHorizontal();
+//         foreach (var prefab in prefabs)
+//         {
+//             if (prefab == null) continue;
 
-            Texture2D preview = AssetPreview.GetAssetPreview(prefab);
-            if (preview == null)
-            {
-                preview = AssetPreview.GetMiniThumbnail(prefab);
-            }
+//             Texture2D preview = AssetPreview.GetAssetPreview(prefab);
+//             if (preview == null)
+//             {
+//                 preview = AssetPreview.GetMiniThumbnail(prefab);
+//             }
 
-            if (GUILayout.Button(preview, GUILayout.Width(80), GUILayout.Height(80)))
-            {
-                PlacePrefab(prefab);
-            }
+//             if (GUILayout.Button(preview, GUILayout.Width(80), GUILayout.Height(80)))
+//             {
+//                 PlacePrefab(prefab);
+//             }
 
-            count++;
-            if (count % columns == 0)
-            {
-                EditorGUILayout.EndHorizontal();
-                EditorGUILayout.BeginHorizontal();
-            }
-        }
-        EditorGUILayout.EndHorizontal();
+//             count++;
+//             if (count % columns == 0)
+//             {
+//                 EditorGUILayout.EndHorizontal();
+//                 EditorGUILayout.BeginHorizontal();
+//             }
+//         }
+//         EditorGUILayout.EndHorizontal();
 
-        EditorGUILayout.EndScrollView();
-    }
+//         EditorGUILayout.EndScrollView();
+//     }
 
-    void PlacePrefab(GameObject prefab)
-    {
-        GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
+//     void PlacePrefab(GameObject prefab)
+//     {
+//         GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
 
-        // ‘I‘ğƒIƒuƒWƒFƒNƒg‚Ìq‚É‚·‚é or ƒV[ƒ“‚ÌŒ´“_‚É’u‚­
-        instance.transform.position = Vector3.zero;
-        //if (Selection.activeTransform != null)
-        //{
-        //    instance.transform.SetParent(Selection.activeTransform, false);
-        //}
-        //else
-        //{
-        //    instance.transform.position = Vector3.zero;
-        //}
+//         // ï¿½Iï¿½ï¿½ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½Ìqï¿½É‚ï¿½ï¿½ï¿½ or ï¿½Vï¿½[ï¿½ï¿½ï¿½ÌŒï¿½ï¿½_ï¿½É’uï¿½ï¿½
+//         instance.transform.position = Vector3.zero;
+//         //if (Selection.activeTransform != null)
+//         //{
+//         //    instance.transform.SetParent(Selection.activeTransform, false);
+//         //}
+//         //else
+//         //{
+//         //    instance.transform.position = Vector3.zero;
+//         //}
 
-        Undo.RegisterCreatedObjectUndo(instance, "Place Prefab");
-        Selection.activeObject = instance;
-    }
-}
+//         Undo.RegisterCreatedObjectUndo(instance, "Place Prefab");
+//         Selection.activeObject = instance;
+//     }
+// }

@@ -53,7 +53,8 @@ public class TextManager : MonoBehaviour
 
     public void StartText(TextScenario scenario)
     {
-        Debug.Log(scenario.name);
+        if (scenario == null) return;
+        //Debug.Log(scenario.name);
         texts = scenario.texts;
         //copystring = scenario.scenarioString;
         changeableindex = scenario.changeableindex;//変更可能なインデックスを取得

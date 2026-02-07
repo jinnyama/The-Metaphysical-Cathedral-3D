@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6c700528fa5b6c844b00b561a860eaa0, type: 3}
-  m_Name: Hint3
+  m_Name: Keytext
   m_EditorClassIdentifier: Assembly-CSharp::TextScenario
   texts:
-  - kjkhukhukhuk
-  scenarioTitle: 
+  - "\u958B\u304B\u308C\u305F\u901A\u8DEF\u306E\u5965\u306B\u4F55\u304B\u3042\u308A\u305D\u3046\u3060\n\u9589\u3056\u3055\u308C\u305F\u6249\u306B\u5411\u304B\u3063\u3066B\u30DC\u30BF\u30F3\u3067\u4F7F\u7528\u3057\u3066\u307F\u3088\u3046\n\t\t\t\t\t\t\t\t\t\t\u25BC"
+  changeableindex: 0
+  scenarioString: 
