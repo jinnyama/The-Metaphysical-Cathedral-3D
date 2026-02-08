@@ -9,7 +9,7 @@ public class BottenScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        Cursor.visible = true; //表示
     }
 
     // Update is called once per frame

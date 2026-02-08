@@ -1,4 +1,5 @@
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 public class BookScript : MonoBehaviour
@@ -144,7 +145,15 @@ public class BookScript : MonoBehaviour
                 break;
             case "鋼":
                 //アイテム欄のイラスト変更
-                
+                for(int i=0;PlayerScript.instance.itemsrot[i].sprite!=null;i++)
+                {
+                    if(PlayerScript.instance.itemsrot[i].sprite==GameManager.Instance.woodkey.sprite)
+                    {
+                        PlayerScript.instance.itemsrot[i].sprite=GameManager.Instance.metalkey.sprite;
+                        
+                        
+                    }
+                }
                 //playerScript.instance.pickaxeの中身を鋼に変える
                 for(int i=0;i<PlayerScript.instance.itemObjects.Length;i++)
                 {
@@ -152,7 +161,7 @@ public class BookScript : MonoBehaviour
                     {
                         PlayerScript.instance.itemObjects[i]=PlayerScript.instance.metalpickeaxeprefab;
                         PlayerScript.instance.isDestroyItem=true;
-                        break;
+                        
                     }
                 }
                 break;

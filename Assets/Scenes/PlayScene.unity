@@ -190,6 +190,7 @@ Transform:
   - {fileID: 5501770534004789747}
   - {fileID: 5525950716908147271}
   - {fileID: 6170946380624618601}
+  - {fileID: 3316005941272471420}
   - {fileID: 6838662777252237042}
   - {fileID: 5506584897478233137}
   - {fileID: 6645446536002777748}
@@ -1545,6 +1546,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 348453736}
   m_Mesh: {fileID: 4300002, guid: 357387220f229a64f8e35720e9d0d121, type: 3}
+--- !u!1 &358319862 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9026256101053911668, guid: bd0b4fed626806c48b1606ef1ddd98e2, type: 3}
+  m_PrefabInstance: {fileID: 142022394073454496}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &358494153
 GameObject:
   m_ObjectHideFlags: 0
@@ -13446,12 +13452,13 @@ MonoBehaviour:
   metalpickeaxeprefab: {fileID: 6212228803233388435, guid: a14568b4d5ce74141a8f6b100ff95295, type: 3}
   woodkeyprefab: {fileID: 322969909244090201, guid: 1a4ce7ed7389af14cbc47a4b3ba8a164, type: 3}
   metalkeyprefab: {fileID: 2457273537969178838, guid: fbac80f280a03844bbdc56acff09ba24, type: 3}
-  brigeprefab: {fileID: 9026256101053911668, guid: bd0b4fed626806c48b1606ef1ddd98e2, type: 3}
+  brigeprefab: {fileID: 358319862}
   UseitemObjects: {fileID: 0}
   fpsCam: {fileID: 20437471534847963}
   distance: 2
   TextWindow: {fileID: 1508046974}
   isDestroyItem: 0
+  ismoveplayer: 0
   activesinarioName: 
   sensitivity: 1
   mouseScrollDelta: 0
@@ -13466,6 +13473,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1a05ba7d3b3bb9c4487a3fcccccb160e, type: 2}
   - {fileID: 11400000, guid: 17488277fcea38941882e5449dd6db1b, type: 2}
   - {fileID: 11400000, guid: c75b7b203f6abd64ea7fd5c26e8e4a34, type: 2}
+  - {fileID: 11400000, guid: 3c7d00d0996965a479b3b4d32b7e8e83, type: 2}
+  - {fileID: 11400000, guid: 9db413b9555917e4386c9166b3d5bef0, type: 2}
   textManager: {fileID: 136877098189778133}
   skyboxes: {fileID: 2100000, guid: e11f5b66aad75483b8cd16ee18a0c917, type: 2}
 --- !u!114 &136877098189778133
@@ -13550,6 +13559,10 @@ PrefabInstance:
     - target: {fileID: 9026256101053911668, guid: bd0b4fed626806c48b1606ef1ddd98e2, type: 3}
       propertyPath: m_Name
       value: WoodenBridgeHanddrails (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026256101053911668, guid: bd0b4fed626806c48b1606ef1ddd98e2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -23294,12 +23307,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3316005941272836956}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.3304849, y: 0.000040690105, z: -0.000045776367}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: 519.9608, y: -405.9014, z: 89.30005}
+  m_LocalScale: {x: 1.2, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6170946380624618601}
+  m_Father: {fileID: 4942660}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &3316005941272836956
 GameObject:
@@ -23316,7 +23329,7 @@ GameObject:
   - component: {fileID: 3316005941272836960}
   m_Layer: 0
   m_Name: DoorGate_Wooden_Left
-  m_TagString: Untagged
+  m_TagString: Textitem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -26728,7 +26741,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4539770015050409753}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
   m_Name: 
@@ -34155,7 +34168,7 @@ GameObject:
   - component: {fileID: 6170946380626519690}
   m_Layer: 0
   m_Name: DoorGate_Wooden_Right
-  m_TagString: tereport
+  m_TagString: Textitem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -34194,8 +34207,7 @@ Transform:
   m_LocalPosition: {x: 523.9574, y: -405.90146, z: 89.3}
   m_LocalScale: {x: 1.2, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 3316005941272471420}
+  m_Children: []
   m_Father: {fileID: 4942660}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!33 &6170946380625388617

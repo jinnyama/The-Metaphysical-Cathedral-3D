@@ -61,6 +61,7 @@ public class TextManager : MonoBehaviour
         index = 0;
         isActive = true;
         PlayerScript.instance.TextWindow.enabled = true;
+        PlayerScript.instance.ismoveplayer = false;
         textUI.gameObject.SetActive(true);
         textUI.text = texts[0];
     }
@@ -71,6 +72,7 @@ public class TextManager : MonoBehaviour
         textUI.gameObject.SetActive(false);
         PlayerScript.instance.scenario = null;
         PlayerScript.instance.TextWindow.enabled = false;
+        PlayerScript.instance.ismoveplayer = true;
     }
     public string SerchCopystring(int mode)
     {

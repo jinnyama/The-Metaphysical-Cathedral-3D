@@ -25,6 +25,7 @@ public class FirstPersonMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        if(!PlayerScript.instance.ismoveplayer)return;
         // Update IsRunning from input.
         IsRunning = canRun && Input.GetKey(runningKey);
 

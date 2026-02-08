@@ -84,7 +84,19 @@ public class itemScript :MonoBehaviour
                     Destroy(PlayerScript.instance.seeObjects);
                     Debug.Log("木製の扉を錆びた鍵で開けました");
                 }
-                
+                TextManager.instance.StartText(PlayerScript.instance.hintscenarios[6]);//錆びた鍵使用時のテキスト
+                break;
+            case "Key_Silver":
+                //銀の鍵の具現化処理をここに追加
+                // GameObject silverkey =Instantiate(PlayerScript.instance.silverkeyprefab);
+                // silverkey.transform.position = PlayerScript.instance.transform.position + PlayerScript.instance.transform.forward * 0.5f + new Vector3(0, 1.0f, 0);
+                // Itemdestroy("Key_Silver");
+                if(PlayerScript.instance.seeObjects!=null&&(PlayerScript.instance.seeObjects.name=="Door_Gate_Wooden_Left"|| PlayerScript.instance.seeObjects.name=="Door_Gate_Wooden_Right"))
+                {
+                    //銀の鍵を使って木製の門を開ける処理
+                    PlayerScript.instance.tereportUse();
+                }
+                TextManager.instance.StartText(PlayerScript.instance.hintscenarios[10]);//銀の鍵使用時のテキスト
                 break;
             default:
                 Debug.Log("具現化するアイテムがありません");

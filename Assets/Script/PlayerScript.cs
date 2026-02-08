@@ -53,6 +53,7 @@ public class PlayerScript : MonoBehaviour
     //protected bool isUseItem;     // アイテム使用フラグ
 
     public bool isDestroyItem=false; // アイテム破壊フラグ
+    public bool ismoveplayer; // プレイヤー移動フラグ
 
     private bool IstextWindowActive=false; //テキストウィンドウ表示フラグ
     public string activesinarioName;//アクティブなシナリオ名格納用
@@ -185,18 +186,28 @@ public class PlayerScript : MonoBehaviour
             if(isGetItem&& itemCounts< maxitemCount)
             {
                 itemGet();
+                isGetItem = false;
             }
             else if(isTereport)
             {
                 tereportUse();
+                IstextWindowActive = false;
             }
             else if(IstextWindowActive)
             {
                 textWindowActive();
-                if (seeObjects.name == "Key_Rusty")
+
+                if (seeObjects!=null&&seeObjects.name == "Key_Rusty")
                 {
                     itemGet();
                 }
+                if(seeObjects!=null&&seeObjects.tag=="Hint")
+                {
+                    
+                    seeObjects.GetComponent<QickOutline>().enabled = false;
+                }
+                IstextWindowActive = false;
+                
             }
         }
         
@@ -428,6 +439,7 @@ public class PlayerScript : MonoBehaviour
                 this.transform.position=new Vector3(508f,17.5f,-1190f);
                 break;
             //他のテレポートもここに追加
+            case "DoorGate_Wooden_Left":
             case "DoorGate_Wooden_Right":
                 SceneManager.LoadScene("Goal");
                 break;
@@ -470,7 +482,20 @@ public class PlayerScript : MonoBehaviour
                 break;
             case "SwitchSecret":
                 scenario=hintscenarios[8];//隠しスイッチのヒントシナリオ
-                brigeprefab.SetActive(true);
+                brigeprefab.SetActive(true);//橋オブジェクトの出現
+                break;
+            case "DoorGate_Wooden_Left":
+            case "DoorGate_Wooden_Right":
+                tereportUse();
+                // if (!endcheak())
+                // {
+                //     scenario=hintscenarios[9];//エンディングシナリオ
+                // }
+                // else
+                // {
+                //     scenario=null;
+                //     tereportUse();
+                // }
                 break;
             default:
                 scenario=null;
@@ -494,6 +519,19 @@ public class PlayerScript : MonoBehaviour
         }
 
         return 0;
+    }
+    private bool endcheak()
+    {
+        //エンディング条件判定処理
+        for(int i=0;itemsrot[i].sprite!=null;i++)
+            {
+                if(itemsrot[i].sprite==GameManager.Instance.metalkey.sprite)
+                {
+                    return true;
+                }
+            }
+        return false;
+        //条件を満たしていたらtrueを返す
     }
     private void OnCollisionEnter(Collision collision)
     {
