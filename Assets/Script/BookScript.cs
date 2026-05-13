@@ -39,17 +39,17 @@ public class BookScript : MonoBehaviour
             //textmouseScrollDelta=PlayerScript.instance.mouseScrollDelta;
             ShowBookTexts();
             
-            for(int i=0;i<maxtextindex;i++)
-            {
-                // if(i==activetextIndex)
-                // {
-                //     BookTextSrot[i].GetComponent<Outline>().effectColor= Color.yellow;
-                // }
-                // else
-                // {
-                //     BookTextSrot[i].GetComponent<Outline>().effectColor = Color.black;
-                // }
-            }
+            // for(int i=0;i<maxtextindex;i++)
+            // {
+            //     // if(i==activetextIndex)
+            //     // {
+            //     //     BookTextSrot[i].GetComponent<Outline>().effectColor= Color.yellow;
+            //     // }
+            //     // else
+            //     // {
+            //     //     BookTextSrot[i].GetComponent<Outline>().effectColor = Color.black;
+            //     // }
+            // }
 
 
         }
