@@ -52,10 +52,10 @@ public class BottenScript : MonoBehaviour
     //             break;
     //     }
     // }
-    // public void PushStartButton()
-    // {
-    //     SceneManager.LoadScene("PlayScene");
-    // }
+    public void PushStartButton()
+    {
+        SceneManager.LoadScene("PlayScene");
+    }
     public void PushTitleButton()
     {
         SceneManager.LoadScene("PlayScene");

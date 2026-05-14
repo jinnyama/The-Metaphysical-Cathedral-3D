@@ -9,5 +9,5 @@ public class TextScenario : ScriptableObject
     public int changeableindex;
     public string scenarioString;
 
-    public bool IsCopychange ;
+    public bool IsCopychange =false;
 }
