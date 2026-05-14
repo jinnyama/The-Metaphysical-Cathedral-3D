@@ -8,4 +8,6 @@ public class TextScenario : ScriptableObject
     public string[] texts;
     public int changeableindex;
     public string scenarioString;
+
+    public bool IsCopychange ;
 }

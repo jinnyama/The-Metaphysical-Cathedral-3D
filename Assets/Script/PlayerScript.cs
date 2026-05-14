@@ -103,6 +103,7 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //テレポート初期化処理
         if (Input.GetKeyDown(KeyCode.R))
         {
             initialtereport();
@@ -138,17 +139,17 @@ public class PlayerScript : MonoBehaviour
                     isGetItem = true;
                     break;
                 case "tereport":
-                    //アイテムオブジェクトを更新
+                    //テレポートオブジェクトを更新
                     seeObjects.GetComponent<QickOutline>().enabled = true;
                     isTereport = true;
                     break;
                 case "Hint":
-                    //アイテムオブジェクトを更新
+                    //ヒント本オブジェクトを更新
                     seeObjects.GetComponent<QickOutline>().enabled = true;
                     IstextWindowActive = true; 
                     break;
                 case "Textitem":
-                    //アイテムオブジェクトを更新
+                    //テキストアイテムオブジェクトを更新
                     seeObjects.GetComponent<QickOutline>().enabled = true;
                     IstextWindowActive = true;
                     break;
@@ -156,6 +157,7 @@ public class PlayerScript : MonoBehaviour
                     break;
             }
         }
+        // なにもHitしなかったら
         if (!isHit)
         {
             if (seeObjects == null)
@@ -180,19 +182,22 @@ public class PlayerScript : MonoBehaviour
             //テキストウィンドウ表示フラグを下ろす
             IstextWindowActive = false;
         }
-        
+        // Eキーが押されたら
         if (Input.GetKeyDown(KeyCode.E)&&seeObjects!=null)
         {
+            //アイテム取得処理
             if(isGetItem&& itemCounts< maxitemCount)
             {
                 itemGet();
                 isGetItem = false;
             }
+            //テレポート処理
             else if(isTereport)
             {
                 tereportUse();
                 IstextWindowActive = false;
             }
+            //テキストウィンドウ表示処理
             else if(IstextWindowActive)
             {
                 textWindowActive();
@@ -222,6 +227,7 @@ public class PlayerScript : MonoBehaviour
             {
                 switch (GameManager.Instance.Gamemode)
                 {
+                    //アイテムスロット選択処理とテキストウィンドウ選択処理を分けるためにgamemodeで条件分岐
                     case "":
                         activeItemIndex+= (int)mouseScrollDelta;
                         if(activeItemIndex>=maxActiveItemIndex)
@@ -289,13 +295,13 @@ public class PlayerScript : MonoBehaviour
         }
 
         //コピー＆ペースト機能
-        if (Input.GetKeyDown(KeyCode.C))//一般化完了
+        if (Input.GetKeyDown(KeyCode.C))//一般化完了　コピー
         {
            //CopyAction( TextScript.Instance.choisetext);
            BookScript.instance.CopyAction();
 
         }
-        if (Input.GetKeyDown(KeyCode.V) && GameManager.Instance.Gamemode == "")//一般化完了
+        if (Input.GetKeyDown(KeyCode.V) && !PlayerScript.instance.scenario.IsCopychange&& GameManager.Instance.Gamemode == "")//一般化完了 ペースト
         {
             BookScript.instance.PasteAction();
         }
@@ -331,6 +337,7 @@ public class PlayerScript : MonoBehaviour
         //テキストウィンドウ表示制御
         for(int i=0;i<BookScript.instance.bookstring.Length-1;i++)
         {
+            //
             if(BookScript.instance.bookstring[i]==null)
             {
                 continue;

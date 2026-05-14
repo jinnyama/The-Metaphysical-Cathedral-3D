@@ -38,20 +38,7 @@ public class BookScript : MonoBehaviour
             //マウスホイールの入力を取得
             //textmouseScrollDelta=PlayerScript.instance.mouseScrollDelta;
             ShowBookTexts();
-            
-            // for(int i=0;i<maxtextindex;i++)
-            // {
-            //     // if(i==activetextIndex)
-            //     // {
-            //     //     BookTextSrot[i].GetComponent<Outline>().effectColor= Color.yellow;
-            //     // }
-            //     // else
-            //     // {
-            //     //     BookTextSrot[i].GetComponent<Outline>().effectColor = Color.black;
-            //     // }
-            // }
-
-
+           
         }
 
     }
@@ -88,16 +75,19 @@ public class BookScript : MonoBehaviour
         }
         //コピーテキストにコピーしたテキストを代入
         copytext.text =TextManager.instance.SerchCopystring(PlayerScript.instance.ChoiseText());
-        //bookstringにコピーしたテキストを代入
-        bookstring[freetextindex++]="<color=black>"+copytext.text+"</color>\n";
+
+        //gamemdeのbookmodeのとき、bookstringの内容をBookTextSrotに反映させる
         if (PlayerScript.instance.ChoiseText() == 1)
         {
+            //矢印で選択しているテキストが変更可能なテキストの場合、bookstringの対応するインデックスにコピーしたテキストを代入
             copytext.text=copytext.text.Replace("<color=red>","");
             copytext.text=copytext.text.Replace("</color>","");
-            copytext.text=copytext.text.Replace("\n","");
 
         }
+        copytext.text=copytext.text.Replace("\n","");
         copytext.text = "copy:"+copytext.text;
+        //bookstringにコピーしたテキストを代入
+        bookstring[freetextindex++]="<color=black>"+copytext.text+"</color>\n";
         maxtextindex++;
 
     }
@@ -129,10 +119,11 @@ public class BookScript : MonoBehaviour
             return;
         }
     
-        if( pastetext==PlayerScript.instance.scenario.scenarioString){
-            
+        if( pastetext==PlayerScript.instance.scenario.scenarioString)
+        {
+            PlayerScript.instance.scenario.IsCopychange=true;
                         
-        }
+        
         switch(pastetext)
         {
             case "晴れ":
@@ -173,6 +164,8 @@ public class BookScript : MonoBehaviour
                 break;
             default:
                 break;
+        }
+            
         }
     }
 }

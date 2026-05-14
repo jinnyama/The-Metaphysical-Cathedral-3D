@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
         Instance = this;
         //background=Background.GetComponent<SpriteRenderer>()  ;
 
-        
+        //画像準備
         book = GameObject.Find("book").GetComponent<Image>();
         woodpickaxe = GameObject.Find("pickaxe").GetComponent<Image>();
         metalpickaxe = GameObject.Find("metalpickaxe").GetComponent<Image>();

@@ -70,7 +70,7 @@ public class itemScript :MonoBehaviour
                 
                 
                 
-                Debug.Log("ツルハシを具現化しました");
+                Debug.Log("ツルハシは具現化できません");
 
                 break;
             case "Key_Rusty":
@@ -135,6 +135,7 @@ public class itemScript :MonoBehaviour
                     }
                 }for(;i<PlayerScript.instance.itemsrot.Length-1;i++)
                 {
+                    //アイテムスロットのイラストを一つずつ前にずらす処理
                     PlayerScript.instance.itemsrot[i].sprite= PlayerScript.instance.itemsrot[i+1].sprite;
                     PlayerScript.instance.itemsrot[i+1].sprite=null;
                     PlayerScript.instance.itemObjects[i]= PlayerScript.instance.itemObjects[i+1];
