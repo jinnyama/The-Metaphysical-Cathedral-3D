@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -96,6 +97,10 @@ public class PlayerScript : MonoBehaviour
         brigeprefab.SetActive(false);  
         scenario=hintscenarios[0];
         textManager.StartText(scenario);
+        for(int i=0;i<hintscenarios.Length;i++)
+        {
+            hintscenarios[i].IsCopychange=false;
+        }
         //bookchildrenBotten=TextWindow.GetComponentInChildren<GameObject>();
         //bookchildrenBotten.SetActive(false);
     }
@@ -202,11 +207,11 @@ public class PlayerScript : MonoBehaviour
             {
                 textWindowActive();
 
-                if (seeObjects!=null&&seeObjects.name == "Key_Rusty")
+                if (seeObjects.name == "Key_Rusty")
                 {
                     itemGet();
                 }
-                if(seeObjects!=null&&seeObjects.tag=="Hint")
+                if(seeObjects.tag=="Hint")
                 {
                     
                     seeObjects.GetComponent<QickOutline>().enabled = false;
@@ -465,30 +470,39 @@ public class PlayerScript : MonoBehaviour
             {
             case "house-red_001":
                 scenario=hintscenarios[0];//プロローグ&家のヒントシナリオ
+                GuidanceScript.instance.guidanceText="本とつるはしをEキーで取得し、ヒント本にEキーで触れよう";//ガイダンステキストの更新
                 break;
             case "Hint1":
                 scenario=hintscenarios[1];//平原でのヒントシナリオ
+                GuidanceScript.instance.guidanceText="お城が出現！！中に入ってみよう！！";//ガイダンステキストの更新
                 break;
             case "Hint2":
                 scenario=hintscenarios[2];//王城のヒントシナリオ
+                GuidanceScript.instance.guidanceText="王座付近の鍵をEキーで取得し、隠し扉を解こう";//ガイダンステキストの更新
                 break;
             case "Hint3":
                 scenario=hintscenarios[3];//教会のヒントシナリオ
+                GuidanceScript.instance.guidanceText="教会には、多くの謎が隠されている。";//ガイダンステキストの更新
                 break;
             case "Hint4":
                 scenario=hintscenarios[4];//隠し扉Hint4のヒントシナリオ
+                GuidanceScript.instance.guidanceText="奥のボタンにEキーで触れてみよう";//ガイダンステキストの更新
                 break;
             case "metal":
                 scenario=hintscenarios[5];//metalのヒントシナリオ
-                break;
+                GuidanceScript.instance.guidanceText="金属の物には、多くの謎が隠されている。";//ガイダンステキストの更新
+                break;  
             case "Key_Rusty":
                 scenario=hintscenarios[6];//錆びた鍵のヒントシナリオ
+                GuidanceScript.instance.guidanceText="錆びた鍵には、多くの謎が隠されている。";//ガイダンステキストの更新
                 break;
             case "Door_Wooden_Round_Right":
                 scenario=hintscenarios[7];//木製の扉のヒントシナリオ
+                //GuidanceScript.instance.guidanceText="木製の扉には、多くの謎が隠されている。";//ガイダンステキストの更新
                 break;
             case "SwitchSecret":
                 scenario=hintscenarios[8];//隠しスイッチのヒントシナリオ
+                //GuidanceScript.instance.guidanceText="隠しスイッチには、多くの謎が隠されている。";//ガイダンステキストの更新
                 brigeprefab.SetActive(true);//橋オブジェクトの出現
                 break;
             case "DoorGate_Wooden_Left":

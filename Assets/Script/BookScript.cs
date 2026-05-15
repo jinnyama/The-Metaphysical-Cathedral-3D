@@ -138,6 +138,7 @@ public class BookScript : MonoBehaviour
                 //アイテム欄のイラスト変更
                 for(int i=0;PlayerScript.instance.itemsrot[i].sprite!=null;i++)
                 {
+                    //もしアイテムスロットに木製の鍵のイラストがあれば、鋼の鍵のイラストに変更する
                     if(PlayerScript.instance.itemsrot[i].sprite==GameManager.Instance.woodkey.sprite)
                     {
                         PlayerScript.instance.itemsrot[i].sprite=GameManager.Instance.metalkey.sprite;

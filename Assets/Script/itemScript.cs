@@ -78,13 +78,14 @@ public class itemScript :MonoBehaviour
                 // GameObject rustykey =Instantiate(PlayerScript.instance.woodkeyprefab);
                 // rustykey.transform.position = PlayerScript.instance.transform.position + PlayerScript.instance.transform.forward * 0.5f + new Vector3(0, 1.0f, 0);
                 // Itemdestroy("Key_Rusty");
+                TextManager.instance.StartText(PlayerScript.instance.hintscenarios[6]);//錆びた鍵使用時のテキスト
+
                 if(PlayerScript.instance.seeObjects!=null&&PlayerScript.instance.seeObjects.name=="Door_Wooden_Round_Right")
                 {
                     //錆びた鍵を使って木製の扉を開ける処理
                     Destroy(PlayerScript.instance.seeObjects);
                     Debug.Log("木製の扉を錆びた鍵で開けました");
                 }
-                TextManager.instance.StartText(PlayerScript.instance.hintscenarios[6]);//錆びた鍵使用時のテキスト
                 break;
             case "Key_Silver":
                 //銀の鍵の具現化処理をここに追加
